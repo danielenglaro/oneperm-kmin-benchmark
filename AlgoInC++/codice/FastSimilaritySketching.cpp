@@ -7,7 +7,6 @@ FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t m, size_t seed
     this->t = t;
     this->m = m;
     funzioniHash = new FSHashFunction(seed, m, t);
-    //modifica alessio
 }
 
 std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64_t> s) {
