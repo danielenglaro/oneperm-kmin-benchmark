@@ -8,10 +8,6 @@ class StampaVettore{
 private:
 
 public:
-    /**
-     * Costruttore
-     */
-
     void printVector(const std::vector<uint64_t>& vettore);
 
     void printVector(const std::vector<double>& vettore);

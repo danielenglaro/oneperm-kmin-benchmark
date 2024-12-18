@@ -91,7 +91,6 @@ int main(int argc, char* argv[]) {
         std::cout << "Exact Jaccard Similarity: " << exactJaccard << "\n";
 
         std::cout << "\n";
-    
     }
 
     return 0;
