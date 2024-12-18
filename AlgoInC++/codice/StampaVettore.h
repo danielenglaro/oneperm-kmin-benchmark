@@ -11,7 +11,6 @@ public:
     /**
      * Costruttore
      */
-    StampaVettore();
 
     void printVector(const std::vector<uint64_t>& vettore);
 
