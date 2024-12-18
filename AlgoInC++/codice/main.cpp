@@ -48,38 +48,33 @@ int main(int argc, char* argv[]) {
     for (auto& coppia:coppie){
         std::vector<uint64_t> set1 = coppia.first;
         std::vector<uint64_t> set2 = coppia.second;
-        
-        // Vettori di input
-        // std::vector<uint64_t> set1 = {1, 6, 7, 14, 3, 10, 11};
-        //std::vector<uint64_t> set2 = {1, 2, 6, 7, 16, 11, 4, 9, 3};
 
         StampaVettore stampa;
-
         std::cout << "Set_1: ";
         stampa.printVector(set1);
         std::cout << "Set_2:";
         stampa.printVector(set2);
-    /*
+
         // Calcolo k-minHash
-        KMinHash kMinHash(k, m, seed);
-        std::vector<uint64_t> firma1 = kMinHash.computeSignature(set1);
-        std::vector<uint64_t> firma2 = kMinHash.computeSignature(set2);
-    */ 
+        // KMinHash kMinHash(k, m, seed);
+        // std::vector<uint64_t> firma1 = kMinHash.computeSignature(set1);
+        // std::vector<uint64_t> firma2 = kMinHash.computeSignature(set2);
     
-      // Calcolo OnePerm
-        OnePermutation oph(k,m,seed);
-        std::vector<uint64_t> firma1 = oph.computeSignature(set1);
-        std::vector<uint64_t> firma2 = oph.computeSignature(set2);
+        // Calcolo OnePerm
+        // OnePermutation oph(k,m,seed);
+        // std::vector<uint64_t> firma1 = oph.computeSignature(set1);
+        // std::vector<uint64_t> firma2 = oph.computeSignature(set2);
 
         // Calcolo FastSimilaritySketching
-        //FastSimilaritySketching fss(k, m, seed);
-        //std::vector<double> firma1 = fss.computeSignature(set1);
-        //std::vector<double> firma2 = fss.computeSignature(set2);
+        FastSimilaritySketching fss(k, m, seed);
+        std::vector<double> firma1 = fss.computeSignature(set1);
+        std::vector<double> firma2 = fss.computeSignature(set2);
 
-        // std::cout << "Firma Set_1: ";
-        // stampa.printVector(firma1);
-        // std::cout << "Firma Set_2: ";
-        // stampa.printVector(firma2);
+        //Stampa Firme
+        std::cout << "Firma Set_1: ";
+        stampa.printVector(firma1);
+        std::cout << "Firma Set_2: ";
+        stampa.printVector(firma2);
 
         // Calcolo della Jaccard Similarity approssimata
         JS js;
@@ -89,7 +84,6 @@ int main(int argc, char* argv[]) {
         // Calcolo della Jaccard Similarity esatta
         float exactJaccard = js.esatta(set1, set2);
         std::cout << "Exact Jaccard Similarity: " << exactJaccard << "\n";
-
         std::cout << "\n";
     }
 
