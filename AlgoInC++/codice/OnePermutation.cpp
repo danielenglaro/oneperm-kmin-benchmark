@@ -13,7 +13,7 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s) 
     
     for (size_t i = 0; i < s.size(); i++) {
         sPerm.push_back( funzHash->map(s[i]) );
-        // std::cout << "DEBUG - Elemento: " << s[i] << ", HashValue: " << funzHash->map(s[i]) << std::endl;
+        //std::cout << "DEBUG - Elemento: " << s[i] << ", HashValue: " << funzHash->map(s[i]) << std::endl;
     }
     
     for (size_t j = 0; j < k; j++){

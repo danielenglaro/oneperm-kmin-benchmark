@@ -1,7 +1,7 @@
 #include "HashFunction.h"
 #include <random>
 
-HashFunction::HashFunction(size_t seed, size_t m) {
+HashFunction::HashFunction(size_t m, size_t seed) {
     this->m = m;
     std::mt19937 gen(seed); // Generatore deterministico
     std::uniform_int_distribution<> distribA(1, m - 1);
