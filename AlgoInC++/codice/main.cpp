@@ -7,47 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include "StampaVettore.h"
-
-/**
- * Calcola la Jaccard Similarity esatta tra due insiemi (Algoritmo Naive).
- * @param set1: Primo insieme.
- * @param set2: Secondo insieme.
- * @return Similarità di Jaccard.
- */
-float jsEsatta(std::vector<uint64_t> set1, std::vector<uint64_t> set2) {
-    std::vector<uint64_t> unione, intersezione;
-    size_t lenS1 = set1.size(), lenS2 = set2.size();
-    unione = set1;
-    for (size_t i = 0; i < lenS2; i++){
-        if (std::find(unione.begin(), unione.end(), set2[i]) == unione.end()){
-            unione.push_back(set2[i]);
-        }
-    }
-    for (size_t i = 0; i < lenS1; i++){
-        if (std::find(set2.begin(), set2.end(), set1[i]) != set2.end()){
-            intersezione.push_back(set1[i]);
-        }
-    }
-    float js = static_cast<float>(intersezione.size()) / unione.size();
-    return js;
-}
-
-/**
- * Funzione per il calcolo della Jaccard Similarity Approssimata
- * @param s1: firme del prima insieme 
- * @param s2: firme del secondo insieme
- * @param k: lunghezza dei vettori delle firme (numero delle funzioni hash utilizzate)
- * @return Similarità di Jaccard Aprrossimata.
- */
-float jsApprossimata(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k){
-    size_t count = 0;
-    for (size_t i = 0; i < k; i++){
-        if (s1[i] == s2[i]){
-            count++;
-        }
-    }
-    return static_cast<float>(count)/k;
-}
+#include "JS.h"
 
 void leggiFile(std::string&filename,std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>>& coppie){
     std::ifstream inFile(filename); // per aprire il file
@@ -122,11 +82,12 @@ int main(int argc, char* argv[]) {
         // stampa.printVector(firma2);
 
         // Calcolo della Jaccard Similarity approssimata
-        float approxJaccard = jsApprossimata(firma1, firma2, k);
+        JS js;
+        float approxJaccard = js.approx(firma1, firma2, k);
         std::cout << "Approximate Jaccard Similarity: " << approxJaccard << "\n";
 
         // Calcolo della Jaccard Similarity esatta
-        float exactJaccard = jsEsatta(set1, set2);
+        float exactJaccard = js.esatta(set1, set2);
         std::cout << "Exact Jaccard Similarity: " << exactJaccard << "\n";
 
         std::cout << "\n";
