@@ -6,6 +6,7 @@
 // #include "FastSimilaritySketching.h"
 #include <fstream>
 #include <sstream>
+#include "StampaVettore.h"
 
 /**
  * Calcola la Jaccard Similarity esatta tra due insiemi (Algoritmo Naive).
@@ -46,18 +47,6 @@ float jsApprossimata(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k){
         }
     }
     return static_cast<float>(count)/k;
-}
-
-/**
- * Funzione di utilità per stampare un vettore.
- * @param array: Vettore da stampare.
- */
-void printVector(const std::vector<uint64_t>& vettore) {
-    std::cout << "[ ";
-    for (size_t val : vettore) {
-        std::cout << val << " ";
-    }
-    std::cout << "]" << std::endl;
 }
 
 void leggiFile(std::string&filename,std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>>& coppie){
@@ -104,10 +93,12 @@ int main(int argc, char* argv[]) {
         // std::vector<uint64_t> set1 = {1, 6, 7, 14, 3, 10, 11};
         //std::vector<uint64_t> set2 = {1, 2, 6, 7, 16, 11, 4, 9, 3};
 
+        StampaVettore stampa;
+
         std::cout << "Set_1: ";
-        printVector(set1);
+        stampa.printVector(set1);
         std::cout << "Set_2:";
-        printVector(set2);
+        stampa.printVector(set2);
     /*
         // Calcolo k-minHash
         KMinHash kMinHash(k, m, seed);
@@ -126,9 +117,9 @@ int main(int argc, char* argv[]) {
         //std::vector<double> firma2 = fss.computeSignature(set2);
 
         // std::cout << "Firma Set_1: ";
-        // printVector(firma1);
+        // stampa.printVector(firma1);
         // std::cout << "Firma Set_2: ";
-        // printVector(firma2);
+        // stampa.printVector(firma2);
 
         // Calcolo della Jaccard Similarity approssimata
         float approxJaccard = jsApprossimata(firma1, firma2, k);
