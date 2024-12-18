@@ -11,7 +11,6 @@ private:
     size_t b;  ///< Coefficiente additivo
     size_t t;  ///< Modulo
     size_t m;
-    std::vector<double> vettoreV;
 public:
     /**
      * Costruttore.

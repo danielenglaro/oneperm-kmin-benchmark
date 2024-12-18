@@ -1,5 +1,6 @@
 #include <vector>
 #include "FSHashFunction.h"
+#include <iostream>
 
 class FastSimilaritySketching {
 private:
