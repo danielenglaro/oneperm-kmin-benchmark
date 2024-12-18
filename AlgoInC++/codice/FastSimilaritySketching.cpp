@@ -26,3 +26,5 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
 }
 
 //prova di modificwa
+
+//modifica daniele
