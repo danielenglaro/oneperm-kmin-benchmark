@@ -1,41 +1,10 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-//#include "KMinHash.h"
-//#include "OnePermutation.h"
-#include "FastSimilaritySketching.h"
-#include <fstream>
-#include <sstream>
+#include "LettoreFile.h"
 #include "StampaVettore.h"
 #include "JS.h"
-
-void leggiFile(std::string &filename, std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> &coppie)
-{
-    std::ifstream inFile(filename); // per aprire il file
-    std::string line;               // per memorizzare ogni riga del file durante la lettura
-    while (std::getline(inFile, line))
-    {
-        std::vector<uint64_t> set1, set2;
-        std::istringstream s1(line); // inizializza un flusso di input dalla stringa line
-        size_t num;
-        while (s1 >> num)
-        {
-            set1.push_back(num);
-        }
-        if (!std::getline(inFile, line))
-            break;
-        std::istringstream s2(line);
-        while (s2 >> num)
-        {
-            set2.push_back(num);
-        }
-        std::getline(inFile, line);
-
-        coppie.push_back({set1, set2});
-
-        std::getline(inFile, line);
-    }
-}
+// #include "KMinHash.h"
+// #include "OnePermutation.h"
+#include "FastSimilaritySketching.h"
 
 int main(int argc, char *argv[])
 {
@@ -50,7 +19,7 @@ int main(int argc, char *argv[])
 
     std::string filename = "due_elementini.txt";
     std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
-    leggiFile(filename, coppie);
+    LettoreFile::read(filename, coppie);
     for (auto &coppia : coppie)
     {
         std::vector<uint64_t> set1 = coppia.first;
@@ -61,7 +30,7 @@ int main(int argc, char *argv[])
         std::cout << "Set_2:";
         StampaVettore::printVector(set2);
 
-        // Calcolo k-minHash
+        // // Calcolo k-minHash
         // KMinHash kMinHash(k, m, seed);
         // std::vector<uint64_t> firma1 = kMinHash.computeSignature(set1);
         // std::vector<uint64_t> firma2 = kMinHash.computeSignature(set2);
@@ -71,7 +40,7 @@ int main(int argc, char *argv[])
         //  std::vector<uint64_t> firma1 = oph.computeSignature(set1);
         //  std::vector<uint64_t> firma2 = oph.computeSignature(set2);
 
-        // Calcolo FastSimilaritySketching
+        // // Calcolo FastSimilaritySketching
         FastSimilaritySketching fss(k, m, seed);
         std::vector<double> firma1 = fss.computeSignature(set1);
         std::vector<double> firma2 = fss.computeSignature(set2);
