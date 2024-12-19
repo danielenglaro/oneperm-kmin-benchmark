@@ -1,11 +1,12 @@
 #include "HashFunction.h"
 #include <vector>
 
-class KMinHash {
+class KMinHash
+{
 private:
-    size_t k;  ///< Numero di funzioni hash.
-    size_t m;  ///< Modulo per le funzioni hash.
-    std::vector<HashFunction*> vettoreFirme; ///< Funzioni hash.
+    size_t k;                                 ///< Numero di funzioni hash.
+    size_t m;                                 ///< Modulo per le funzioni hash.
+    std::vector<HashFunction *> vettoreFirme; ///< Funzioni hash.
 
 public:
     /**

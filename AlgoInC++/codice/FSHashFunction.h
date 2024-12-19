@@ -1,16 +1,18 @@
-#ifndef HASHFUNCTION_H  // Controlla se la macro non è già definita
-#define HASHFUNCTION_H  // Definisci la macro per evitare inclusioni successive
+#ifndef HASHFUNCTION_H // Controlla se la macro non è già definita
+#define HASHFUNCTION_H // Definisci la macro per evitare inclusioni successive
 
 #include <cstddef>
 #include <iostream>
 #include <vector>
 
-class FSHashFunction {
+class FSHashFunction
+{
 private:
-    size_t a;  ///< Coefficiente moltiplicativo
-    size_t b;  ///< Coefficiente additivo
-    size_t t;  ///< Modulo
+    size_t a; ///< Coefficiente moltiplicativo
+    size_t b; ///< Coefficiente additivo
+    size_t t; ///< Modulo
     size_t m;
+
 public:
     /**
      * Costruttore.
