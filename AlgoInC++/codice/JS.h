@@ -15,9 +15,9 @@ public:
      * @param k: lunghezza dei vettori delle firme (numero delle funzioni hash utilizzate)
      * @return Similarità di Jaccard Aprrossimata.
      */
-    float approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k);
+    static float approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k);
 
-    float approx(std::vector<double> s1, std::vector<double> s2, int k);
+    static float approx(std::vector<double> s1, std::vector<double> s2, int k);
 
     /**
      * Calcola la Jaccard Similarity esatta tra due insiemi (Algoritmo Naive).
@@ -25,5 +25,5 @@ public:
      * @param set2: Secondo insieme.
      * @return Similarità di Jaccard.
      */
-    float esatta(std::vector<uint64_t> set1, std::vector<uint64_t> set2);
+    static float esatta(std::vector<uint64_t> set1, std::vector<uint64_t> set2);
 };

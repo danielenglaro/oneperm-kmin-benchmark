@@ -56,11 +56,10 @@ int main(int argc, char *argv[])
         std::vector<uint64_t> set1 = coppia.first;
         std::vector<uint64_t> set2 = coppia.second;
 
-        StampaVettore stampa;
         std::cout << "Set_1: ";
-        stampa.printVector(set1);
+        StampaVettore::printVector(set1);
         std::cout << "Set_2:";
-        stampa.printVector(set2);
+        StampaVettore::printVector(set2);
 
         // Calcolo k-minHash
         // KMinHash kMinHash(k, m, seed);
@@ -79,17 +78,16 @@ int main(int argc, char *argv[])
 
         // Stampa Firme
         std::cout << "Firma Set_1: ";
-        stampa.printVector(firma1);
+        StampaVettore::printVector(firma1);
         std::cout << "Firma Set_2: ";
-        stampa.printVector(firma2);
+        StampaVettore::printVector(firma2);
 
         // Calcolo della Jaccard Similarity approssimata
-        JS js;
-        float approxJaccard = js.approx(firma1, firma2, k);
+        float approxJaccard = JS::approx(firma1, firma2, k);
         std::cout << "Approximate Jaccard Similarity: " << approxJaccard << "\n";
 
         // Calcolo della Jaccard Similarity esatta
-        float exactJaccard = js.esatta(set1, set2);
+        float exactJaccard = JS::esatta(set1, set2);
         std::cout << "Exact Jaccard Similarity: " << exactJaccard << "\n";
         std::cout << "\n";
     }

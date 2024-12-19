@@ -27,8 +27,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
             if (v < signature[b])
                 signature[b] = v;
             // std::cout << "\naggiornamento firma: "; //qui non lo è piu
-            StampaVettore stmp;
-            stmp.printVector(signature);
+            StampaVettore::printVector(signature);
         }
         if (c == t)
             return signature;
