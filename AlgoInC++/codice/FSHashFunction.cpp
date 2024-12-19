@@ -17,12 +17,14 @@ FSHashFunction::FSHashFunction(size_t seed, size_t m, size_t t)
 std::pair<size_t, double> FSHashFunction::map(size_t x, size_t i)
 {
     size_t bin;
-    double val = i + static_cast<double>((static_cast<size_t>(a) * x + b) % m) / m;
+    double val = i + (static_cast<double>((static_cast<size_t>(a) * x + b) % m) / m);
     if (i < t)
     {
         bin = (static_cast<size_t>(a) * x + b) % t;
+        std::cout << "[DEBUG] Map con x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
         return {bin, val};
     }
     bin = i - t;
+    std::cout << "[DEBUG] Map con l'altracon x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
     return {b, val};
 }

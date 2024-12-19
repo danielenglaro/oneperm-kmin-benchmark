@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-// #include "KMinHash.h"
-// #include "OnePermutation.h"
+//#include "KMinHash.h"
+//#include "OnePermutation.h"
 #include "FastSimilaritySketching.h"
 #include <fstream>
 #include <sstream>
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     size_t m = std::stoi(argv[2]); // Modulo dell'universo
     size_t seed = 2;               // Seed fisso per test ripetibili
 
-    std::string filename = "dataset_0.47.txt";
+    std::string filename = "due_elementini.txt";
     std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
     leggiFile(filename, coppie);
     for (auto &coppia : coppie)
@@ -67,9 +67,9 @@ int main(int argc, char *argv[])
         // std::vector<uint64_t> firma2 = kMinHash.computeSignature(set2);
 
         // Calcolo OnePerm
-        // OnePermutation oph(k,m,seed);
-        // std::vector<uint64_t> firma1 = oph.computeSignature(set1);
-        // std::vector<uint64_t> firma2 = oph.computeSignature(set2);
+        //   OnePermutation oph(k,m,seed);
+        //  std::vector<uint64_t> firma1 = oph.computeSignature(set1);
+        //  std::vector<uint64_t> firma2 = oph.computeSignature(set2);
 
         // Calcolo FastSimilaritySketching
         FastSimilaritySketching fss(k, m, seed);

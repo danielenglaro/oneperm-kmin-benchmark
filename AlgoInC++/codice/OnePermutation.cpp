@@ -16,7 +16,7 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s)
     for (size_t i = 0; i < s.size(); i++)
     {
         sPerm.push_back(funzHash->map(s[i]));
-        // std::cout << "DEBUG - Elemento: " << s[i] << ", HashValue: " << funzHash->map(s[i]) << std::endl;
+        std::cout << "DEBUG - Elemento: " << s[i] << ", HashValue: " << funzHash->map(s[i]) << std::endl;
     }
 
     for (size_t j = 0; j < k; j++)
@@ -27,10 +27,10 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s)
             {
                 if (sPerm[i] % numElemBin < signature[j])
                     signature[j] = sPerm[i] % numElemBin;
-                // std::cout << "DEBUG - Bin " << j
-                //             << ": elemento=" << sPerm[i]
-                //             << ", modValue=" << signature[j]
-                //             << ", nuovo valore signature[" << j << "]=" << signature[j] << std::endl;
+                std::cout << "DEBUG - Bin " << j
+                            << ": elemento=" << sPerm[i]
+                            << ", modValue=" << signature[j]
+                            << ", nuovo valore signature[" << j << "]=" << signature[j] << std::endl;
             }
         }
     }
