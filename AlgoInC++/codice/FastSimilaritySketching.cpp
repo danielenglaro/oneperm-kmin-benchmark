@@ -18,29 +18,33 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     std::cout << "[DEBUG] Inizio calcolo signature per vettore di lunghezza " << lung << std::endl;
 
     for (size_t i = 0; i < 2 * t; i++)
-    { std::cout << "[DEBUG] Iterazione i=" << i << std::endl;
+    {
+        std::cout << i <<"-esima Iterazione" << std::endl;
         for (size_t j = 0; j < lung; j++)
         {
             size_t b = (funzioniHash->map(s[j], i)).first;
             double v = (funzioniHash->map(s[j], i)).second;
-            std::cout << "  [DEBUG] Elemento s[" << j << "]=" << s[j]
-                      << ", bin=" << b << ", valore=" << v << std::endl;
+            // std::cout << "Elemento s[" << j << "]=" << s[j] << ", bin=" << b << ", valore=" << v << std::endl;
 
             if (signature[b] == std::numeric_limits<double>::max())
+            {
                 c++;
-                 std::cout << "  [DEBUG] Primo valore nel bin " << b << ", incremento c a " << c << std::endl;
+                // std::cout << "Primo valore nel bin " << b << ", incremento c a " << c << std::endl;
+            }
             // std::cout << "\nb: " << b << "\nv: " << v; //qui v è un valore con la virgola
             if (v < signature[b])
-             std::cout << "  [DEBUG] Aggiornamento signature[" << b << "] da " << signature[b] << " a " << v << std::endl;
+            {
+                // std::cout << "Aggiornamento signature[" << b << "] da " << signature[b] << " a " << v << std::endl;
                 signature[b] = v;
-            // std::cout << "\naggiornamento firma: "; //qui non lo è piu
+                // std::cout << "\naggiornamento firma: "; //qui non lo è piu
+            }
             StampaVettore::printVector(signature);
         }
-        if (c == t)
-         std::cout << "[DEBUG] Tutti i bin riempiti. Firma calcolata." << std::endl;
-            return signature;
+        if (c == t){
+            // std::cout << "[C HA RAGGIUNTO T]" << std::endl;
+        break;
+        }
     }
-     std::cout << "[DEBUG] Firma completa calcolata dopo tutte le iterazioni." << std::endl;
-    return signature;
+    // std::cout << "[Fine] Firma completa calcolata dopo tutte le iterazioni." << std::endl;
     return signature;
 }
