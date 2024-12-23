@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     size_t algoritmo = std::stoi(argv[3]); // Selezione algoritmo
     std::string filename = argv[4];        // Nome del file passato come argomento
     size_t seed;
-    size_t seed_input = std::stoi(argv[5]);
+    int seed_input = std::stoi(argv[5]);
     if (seed_input == -1)
     {
         seed = time(NULL); // Seed random
