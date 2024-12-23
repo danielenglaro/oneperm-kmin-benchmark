@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     size_t k = std::stoi(argv[1]); // Numero di funzioni hash
     size_t m = std::stoi(argv[2]); // Modulo dell'universo
     size_t seed = time(NULL);            // Seed fisso per test ripetibili
-
-    std::string filename = "data_0.47.txt";
+    std::string filename = argv[3]; // Nome del file passato come argomento
+    
     std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
     LettoreFile::read(filename, coppie);
     // for (auto &coppia : coppie)
