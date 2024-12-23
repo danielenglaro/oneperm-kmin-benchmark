@@ -15,11 +15,11 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     std::vector<double> signature(t, (std::numeric_limits<double>::max()));
     size_t lung = s.size();
     size_t c = 0;
-    std::cout << "[DEBUG] Inizio calcolo signature per vettore di lunghezza " << lung << std::endl;
+    // std::cout << "[DEBUG] Inizio calcolo signature per vettore di lunghezza " << lung << std::endl;
 
     for (size_t i = 0; i < 2 * t; i++)
     {
-        std::cout << i <<"-esima Iterazione" << std::endl;
+        // std::cout << i <<"-esima Iterazione" << std::endl;
         for (size_t j = 0; j < lung; j++)
         {
             size_t b = (funzioniHash->map(s[j], i)).first;
@@ -38,7 +38,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
                 signature[b] = v;
                 // std::cout << "\naggiornamento firma: "; //qui non lo è piu
             }
-            StampaVettore::printVector(signature);
+            // StampaVettore::printVector(signature);
         }
         if (c == t){
             // std::cout << "[C HA RAGGIUNTO T]" << std::endl;
