@@ -42,5 +42,5 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     }
      std::cout << "[DEBUG] Firma completa calcolata dopo tutte le iterazioni." << std::endl;
     return signature;
-    return signature;
+
 }
