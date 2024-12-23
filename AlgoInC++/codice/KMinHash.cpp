@@ -11,9 +11,9 @@ KMinHash::KMinHash(size_t k, size_t m, size_t seed)
     }
 }
 
-std::vector<uint64_t> KMinHash::computeSignature(std::vector<uint64_t> s)
+std::vector<double> KMinHash::computeSignature(std::vector<uint64_t> s)
 {
-    std::vector<uint64_t> signature(k, UINT64_MAX);
+    std::vector<double> signature(k, std::numeric_limits<double>::max() );
     size_t lung = s.size();
     for (size_t i = 0; i < k; i++)
     {

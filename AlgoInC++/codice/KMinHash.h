@@ -22,5 +22,5 @@ public:
      * @param s: Vettore di input.
      * @return Firma k-minHash come vettore di interi.
      */
-    std::vector<uint64_t> computeSignature(std::vector<uint64_t> s);
+    std::vector<double> computeSignature(std::vector<uint64_t> s);
 };

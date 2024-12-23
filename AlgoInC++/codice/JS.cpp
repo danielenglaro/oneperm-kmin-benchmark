@@ -3,7 +3,7 @@
 float JS::approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k)
 {
     size_t count = 0;
-    for (size_t i = 0; i < k; i++)
+    for (int i = 0; i < k; i++)
     {
         if (s1[i] == s2[i])
         {
@@ -16,7 +16,7 @@ float JS::approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k)
 float JS::approx(std::vector<double> s1, std::vector<double> s2, int k)
 {
     size_t count = 0;
-    for (size_t i = 0; i < k; i++)
+    for (int i = 0; i < k; i++)
     {
         if (s1[i] == s2[i])
         {

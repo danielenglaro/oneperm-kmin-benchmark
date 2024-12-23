@@ -7,7 +7,7 @@ FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t m, size_t seed
 {
     this->t = t;
     this->m = m;
-    funzioniHash = new HashFunction(seed, m, t);
+    funzioniHash = new HashFunction(m, seed, t);
 }
 
 std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64_t> s)
@@ -19,7 +19,6 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
 
     for (size_t i = 0; i < 2 * t; i++)
     {
-        // std::cout << i <<"-esima Iterazione" << std::endl;
         for (size_t j = 0; j < lung; j++)
         {
             size_t b = (funzioniHash->map(s[j], i)).first;
@@ -38,14 +37,12 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
                 signature[b] = v;
                 // std::cout << "\naggiornamento firma: "; //qui non lo è piu
             }
-            // StampaVettore::printVector(signature);
         }
         if (c == t){
             // std::cout << "[C HA RAGGIUNTO T]" << std::endl;
         break;
         }
     }
-     std::cout << "[DEBUG] Firma completa calcolata dopo tutte le iterazioni." << std::endl;
-    return signature;
+    // StampaVettore::printVector(signature);
     return signature;
 }
