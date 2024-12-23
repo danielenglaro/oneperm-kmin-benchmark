@@ -11,7 +11,7 @@ FSHashFunction::FSHashFunction(size_t seed, size_t m, size_t t)
     std::uniform_int_distribution<> distribB(0, m - 1);
     this->a = distribA(gen);
     this->b = distribB(gen);
-    // std::cout << "MyHash: a=" << a << ", b=" << b << ", m=" << m << std::endl;
+    // std::cout << "MyHash: a=" << a << ", b=" << b << ", m=" << m << ", t=" << t << std::endl;
 }
 
 std::pair<size_t, double> FSHashFunction::map(size_t x, size_t i)
@@ -20,11 +20,11 @@ std::pair<size_t, double> FSHashFunction::map(size_t x, size_t i)
     double val = i + (static_cast<double>((static_cast<size_t>(a) * x + b) % m) / m);
     if (i < t)
     {
-        bin = (static_cast<size_t>(a) * x + b) % t;
-        std::cout << "[DEBUG] Map con x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
+        bin = (static_cast<size_t>(a)*x + b) % t;
+        // std::cout << "   [HASH-1] Map con x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
         return {bin, val};
     }
     bin = i - t;
-    std::cout << "[DEBUG] Map con l'altracon x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
-    return {b, val};
+    // std::cout << "   [HASH-2] Map con l'altracon x=" << x << ", i=" << i << " -> bin=" << bin << ", val=" << val << std::endl;
+    return {bin, val};
 }
