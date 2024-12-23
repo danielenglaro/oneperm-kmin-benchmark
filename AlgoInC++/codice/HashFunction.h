@@ -10,13 +10,14 @@ private:
     size_t a; ///< Coefficiente moltiplicativo
     size_t b; ///< Coefficiente additivo
     size_t m; ///< Modulo
+    size_t t; ///< Dimensione firma
 public:
     /**
      * Costruttore.
      * @param m: Modulo per la funzione hash.
      * @param seed: Semina per il generatore casuale.
      */
-    HashFunction(size_t m, size_t seed);
+    HashFunction(size_t m, size_t seed, size_t = 0);
 
     /**
      * Mappa un elemento `x` utilizzando la funzione hash.
@@ -24,6 +25,8 @@ public:
      * @return Valore hashato.
      */
     size_t map(size_t x);
+
+    std::pair<size_t, double> map(size_t x, size_t i);
 };
 
 #endif // Fine della protezione contro l'inclusione multipla

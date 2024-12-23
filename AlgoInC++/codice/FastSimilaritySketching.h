@@ -1,5 +1,5 @@
 #include <vector>
-#include "FSHashFunction.h"
+#include "HashFunction.h"
 #include <iostream>
 
 class FastSimilaritySketching
@@ -7,7 +7,7 @@ class FastSimilaritySketching
 private:
     size_t t;                     ///< Numero di bin.
     size_t m;                     ///< Modulo per le funzioni hash.
-    FSHashFunction *funzioniHash; ///< Funzioni hash.
+    HashFunction *funzioniHash; ///< Funzioni hash.
 
 public:
     /**

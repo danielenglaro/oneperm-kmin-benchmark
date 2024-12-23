@@ -7,7 +7,7 @@ FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t m, size_t seed
 {
     this->t = t;
     this->m = m;
-    funzioniHash = new FSHashFunction(seed, m, t);
+    funzioniHash = new HashFunction(seed, m, t);
 }
 
 std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64_t> s)

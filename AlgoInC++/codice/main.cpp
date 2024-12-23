@@ -2,8 +2,8 @@
 #include "LettoreFile.h"
 #include "StampaVettore.h"
 #include "JS.h"
-// #include "KMinHash.h"
-// #include "OnePermutation.h"
+#include "KMinHash.h"
+#include "OnePermutation.h"
 #include "FastSimilaritySketching.h"
 
 int main(int argc, char *argv[])
