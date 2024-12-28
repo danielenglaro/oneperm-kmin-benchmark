@@ -1,6 +1,6 @@
 #include "LettoreFile.h"
-#include <fstream>
-#include <iostream>
+
+
 
 void LettoreFile::read(std::string &filename, std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> &coppie)
 {

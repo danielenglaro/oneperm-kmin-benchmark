@@ -1,3 +1,9 @@
+
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <utility>
 #include <sstream>
 class LettoreFile
 {

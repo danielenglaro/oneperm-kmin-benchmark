@@ -5,6 +5,8 @@
 #include "KMinHash.h"
 #include "OnePermutation.h"
 #include "FastSimilaritySketching.h"
+#include <ctime>
+
 
 int main(int argc, char *argv[])
 {

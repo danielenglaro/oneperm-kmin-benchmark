@@ -1,6 +1,6 @@
 #include "HashFunction.h"
 #include <vector>
-
+#include <limits>
 class OnePermutation
 {
 private:
