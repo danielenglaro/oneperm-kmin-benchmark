@@ -50,6 +50,11 @@
         "fstream": "cpp",
         "sstream": "cpp",
         "algorithm": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "charconv": "cpp",
+        "complex": "cpp",
+        "memory": "cpp",
+        "forward_list": "cpp",
+        "iomanip": "cpp"
     }
 }
