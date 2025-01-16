@@ -20,7 +20,7 @@ class Test {
 private:
     // Metodi privati di utilità
     static std::vector<uint64_t> generate_random_set(int n, int m);
-    static void save_result(const std::string& filename, int param, double time);
+    // static void save_result(const std::string& filename, const std::string& algoritmo, int param, int rep, double time, const std::string& strParam);
 
 public:
     // Metodi pubblici

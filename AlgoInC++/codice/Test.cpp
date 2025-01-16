@@ -18,22 +18,41 @@ std::vector<uint64_t> Test::generate_random_set(int n, int m) {
     return set;
 }
 
-// void Test::compute_signature(const std::vector<int>& set, int k) {
-//     // Implementa qui la logica per calcolare la signature
-//     // Questo è solo un placeholder
+// void Test::save_result(const std::string& filename, const std::string& algoritmo, int param, int rep, double time, const std::string& strParam) {
+//     std::ofstream file;
+    
+//     // Apre il file in modalità append
+//     if (rep == 0 && param == n_values[0] && algoritmo == "KMH") {
+//         // Se è la prima iterazione del primo algoritmo, sovrascrivi il file
+//         file.open(filename);
+//         file << "Algoritmo;Dimensione (" + strParam + ");Funzione hash;Tempo di esecuzione\n";
+//     } else {
+//         file.open(filename, std::ios::app);
+//     }
+    
+//     if (file.is_open()) {
+//         file << algoritmo << ";" << param << ";" << rep + 1 << ";" << time << "\n";
+//         file.close();
+//     }
 // }
-
-void Test::save_result(const std::string& filename, int param, double time) {
-    std::ofstream file(filename, std::ios::app);
-    if (file.is_open()) {
-        file << param << "," << time << "\n";
-        file.close();
-    }
-}
 
 // Implementazione dei metodi pubblici
 void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetitions, int m) {
-    std::vector<std::string> algoritmi = {"kMinHash", "OPH", "FSS"};
+    std::string output_file = "time_results_n.csv";
+
+    // Apri il file e scrivi l'header
+    std::ofstream file;
+    file.open(output_file);
+    file << "Algoritmo;Dimensione (n);Funzione hash;Tempo di esecuzione\n";
+    file.close();
+
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+
+    // Inizializza il generatore di numeri casuali
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
     for (std::string algoritmo : algoritmi)
     {
         for(int n : n_values) {
@@ -41,9 +60,12 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
             times.reserve(repetitions);       // Riserva spazio in memoria per 'repetitions' elementi
             std::vector<uint64_t> set = generate_random_set(n, m);
             for(int rep = 0; rep < repetitions; rep++) {
-                size_t seed = time(NULL);
+                file.open(output_file, std::ios::app);
+
+                size_t seed = dis(gen);
+                
                 auto start = std::chrono::high_resolution_clock::now();
-                if (algoritmo == "kMinHash"){
+                if (algoritmo == "KMH"){
                     KMinHash kMinHash(k_fixed, m, seed);
                     kMinHash.computeSignature(set);
                 }
@@ -59,16 +81,30 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 times.push_back(duration); 
+
+                file << algoritmo << ";" << n << ";" << rep + 1 << ";" << duration << "\n";
+                file.close();
             }
-            
-            double avg_time = std::accumulate(times.begin(), times.end(), 0.0) / repetitions;
-            save_result("time_vs_n_" + algoritmo + ".csv", n, avg_time);
         }
     }
 }
 
 void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetitions, int m) {
-    std::vector<std::string> algoritmi = {"kMinHash", "OPH", "FSS"};
+    std::string output_file = "time_results_k.csv";
+
+    // Apri il file e scrivi l'header
+    std::ofstream file;
+    file.open(output_file);
+    file << "Algoritmo;Dimensione (k);Funzione hash;Tempo di esecuzione\n";
+    file.close();
+
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+
+    // Inizializza il generatore di numeri casuali
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
     for (std::string algoritmo : algoritmi)
     {
         for(int k : k_values) {
@@ -76,9 +112,11 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
             times.reserve(repetitions);       // Riserva spazio in memoria per 'repetitions' elementi
             std::vector<uint64_t> set = generate_random_set(n_fixed, m);
             for(int rep = 0; rep < repetitions; rep++) {
-                size_t seed = time(NULL);
+                file.open(output_file, std::ios::app);
+
+                size_t seed = dis(gen);
                 auto start = std::chrono::high_resolution_clock::now();
-                if (algoritmo == "kMinHash"){
+                if (algoritmo == "KMH"){
                     KMinHash kMinHash(k, m, seed);
                     kMinHash.computeSignature(set);
                 }
@@ -95,10 +133,10 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 times.push_back(duration); 
+
+                file << algoritmo << ";" << k << ";" << rep + 1 << ";" << duration << "\n";
+                file.close();
             }
-            
-            double avg_time = std::accumulate(times.begin(), times.end(), 0.0) / repetitions;
-            save_result("time_vs_k_" + algoritmo + ".csv", k, avg_time);
         }
     }
 }
