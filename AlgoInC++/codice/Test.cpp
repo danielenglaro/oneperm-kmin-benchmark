@@ -9,7 +9,7 @@ std::vector<uint64_t> Test::generate_random_set(int n, int m) {
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(1, m);
     
-    while (set.size() < n) {
+    while (static_cast<int>(set.size() ) < n) {
         int num = dis(gen);
         if (std::find(set.begin(), set.end(), num) == set.end()) {
             set.push_back(num);
@@ -55,7 +55,6 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                     FastSimilaritySketching fss(k_fixed, m, seed);
                     fss.computeSignature(set);
                 }
-                
                 auto end = std::chrono::high_resolution_clock::now();
                 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
