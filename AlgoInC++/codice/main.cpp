@@ -20,20 +20,22 @@ int main()
     // std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
     // LettoreFile::read(filename, coppie);
 
-    std::vector<int> n_range, k_range; // potenze di 2, partendo da 2^10 
-    for(int i = 1; i <= 512; i *= 2) { // 131072 potenza di 2 maggiore di 100 000
+    std::vector<int> n_range; // potenze di 2, partendo da 2^10 
+    for(int i = 1; i <= 131072; i *= 2) { // 131072 potenza di 2 maggiore di 100 000
         n_range.push_back(i);
+    }
+
+    std::vector<int> k_range; // potenze di 2, partendo da 2^10 
+    for(int i = 1; i <= 2048; i *= 2) { // 131072 potenza di 2 maggiore di 100 000
         k_range.push_back(i);
     }
 
-    Test::test_time_vs_n(500, n_range, 10, m); //ripetizioni anche 100 o 1000
+    Test::test_time_vs_n(1000, n_range, 500, m); //ripetizioni anche 100 o 1000
     system("./venv/bin/python3 graficoTempo.py n"); // Esegui lo script Python per generare il grafico in funzione di n
     system("open grafico_tempo_n.png");  // Per macOS
     // system("start grafico_n.png");     // Per Windows
     
-    Test::test_time_vs_k(k_range, 10000, 10, m);
+    Test::test_time_vs_k(k_range, 65000, 500, m);
     system("./venv/bin/python3 graficoTempo.py k"); // Esegui lo script Python per generare il grafico in funzione di k
-    system("open grafico_tempo_k.png");  // Per macOS
-    
-    
+    system("open grafico_tempo_k.png");
 }
