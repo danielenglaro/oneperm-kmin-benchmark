@@ -9,33 +9,41 @@
 #include "Prime.h"
 #include <ctime>
 
-
 int main()
 {
-    // size_t k = 1000;         // Numero di funzioni hash
-    size_t m = Prime::nextPrime(  1073741824  );         // Modulo dell'universo (2^32 = 4294967296) ()
-    // std::string filename = argv[4];        // Nome del file passato come argomento
-    
+    // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30
+    size_t m = Prime::nextPrime(1073741824);
 
-    // std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
-    // LettoreFile::read(filename, coppie);
+    // Vettore per memorizzare le potenze di 2 per la dimensione n
+    std::vector<int> n_range;
 
-    std::vector<int> n_range; // potenze di 2, partendo da 2^10 
-    for(int i = 1; i <= 131072; i *= 2) { // 131072 potenza di 2 maggiore di 100 000
+    // Ciclo per generare le potenze di 2 fino a 2^17
+    for (int i = 1; i <= 131072; i *= 2)
+    {
         n_range.push_back(i);
     }
 
-    std::vector<int> k_range; // potenze di 2, partendo da 2^10 
-    for(int i = 1; i <= 2048; i *= 2) { // 131072 potenza di 2 maggiore di 100 000
+    // Vettore per memorizzare le potenze di 2 per il numero di funzioni hash k
+    std::vector<int> k_range;
+
+    // Ciclo per generare le potenze di 2 fino a 2^11
+    for (int i = 1; i <= 2048; i *= 2)
+    {
         k_range.push_back(i);
     }
 
-    Test::test_time_vs_n(1000, n_range, 500, m); //ripetizioni anche 100 o 1000
-    system("./venv/bin/python3 graficoTempo.py n"); // Esegui lo script Python per generare il grafico in funzione di n
-    system("open grafico_tempo_n.png");  // Per macOS
-    // system("start grafico_n.png");     // Per Windows
-    
+    // Esegui il test per analizzare il tempo in funzione di n
+    Test::test_time_vs_n(1000, n_range, 500, m);
+
+    // Esegui lo script Python per generare il grafico dei tempi in funzione di n
+    system("./venv/bin/python3 graficoTempo.py n");
+
+    system("open grafico_tempo_n.png");
+
+    // Esegui il test per analizzare il tempo in funzione di k
     Test::test_time_vs_k(k_range, 65000, 500, m);
-    system("./venv/bin/python3 graficoTempo.py k"); // Esegui lo script Python per generare il grafico in funzione di k
+
+    // Esegui lo script Python per generare il grafico dei tempi in funzione di k
+    system("./venv/bin/python3 graficoTempo.py k");
+
     system("open grafico_tempo_k.png");
-}
