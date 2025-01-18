@@ -1,5 +1,7 @@
-import random
+#!/usr/bin/env python3
 
+import random
+import sys
 
 def create_pair(size_union: int, U: int = 2**30, J: float = 0.5) -> tuple[set, set]:
     """
@@ -75,8 +77,12 @@ if __name__ == "__main__":
     # A, B = create_pair(10_000, J=0.95)
     # print(len(A & B) / len(A | B), len(A), len(B))
 
-    # esempio
-    N = 1
-    size_union = 100
-    J = 0.47
+    # Verifica che ci sia un argomento e che sia valido (n o k)
+    if len(sys.argv) != 4:
+        print("Uso: python3 script.py N_coppie size_union JS")
+        sys.exit(1)
+
+    N = int(sys.argv[1])
+    size_union = int(sys.argv[2])
+    J = float(sys.argv[3])
     create_dataset(N, size_union, J)

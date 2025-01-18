@@ -60,7 +60,6 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
             std::vector<uint64_t> set = generate_random_set(n, m);
             for (int rep = 0; rep < repetitions; rep++)
             {
-                file.open(output_file, std::ios::app);
 
                 size_t seed = dis(gen);
 
@@ -85,6 +84,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 times.push_back(duration);
 
+                file.open(output_file, std::ios::app);
                 file << algoritmo << ";" << n << ";" << rep + 1 << ";" << duration << "\n";
                 file.close();
             }
@@ -124,7 +124,6 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
             std::vector<uint64_t> set = generate_random_set(n_fixed, m);
             for (int rep = 0; rep < repetitions; rep++)
             {
-                file.open(output_file, std::ios::app);
 
                 size_t seed = dis(gen);
                 auto start = std::chrono::high_resolution_clock::now();
@@ -149,8 +148,74 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
                 times.push_back(duration);
 
+                file.open(output_file, std::ios::app);
                 file << algoritmo << ";" << k << ";" << rep + 1 << ";" << duration << "\n";
                 file.close();
+            }
+        }
+    }
+}
+
+void Test::test_quality(std::vector<int> k_values, int repetitions, int m, int n) {
+    std::string output_file = "quality_results.csv";
+
+    // Apri il file e scrivi l'header
+    std::ofstream file;
+    file.open(output_file);
+    file << "Algoritmo;K;Jaccard_reale;Ripetizione;Jaccard_stimata\n";
+    file.close();
+
+    std::vector<double> jaccard_values = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+
+    for (std::string algoritmo : algoritmi) {
+        for (int k : k_values) {
+            for (double jaccard_target : jaccard_values) {
+                std::cout << "\nsono qui!";
+                // Costruiamo il comando
+                std::string comando = "./venv/bin/python3 script.py 1 " + 
+                     std::to_string(n) + " " + 
+                     std::to_string(jaccard_target);
+                system(comando.c_str());
+
+                std::cout << "\nComando da eseguire: " << comando << std::endl;
+                system(comando.c_str());
+                std::cout << "\nsono anche qui!";
+
+                std::string filename = "dataset_"+ std::to_string(jaccard_target) +".txt";
+                std::pair<std::vector<uint64_t>, std::vector<uint64_t>> coppia = LettoreFile::read(filename)[0];
+                float jaccard_exact = JS::esatta(coppia.first, coppia.second);
+
+                for (int rep = 0; rep < repetitions; rep++) {
+                    
+                    size_t seed = rep;
+                    float jaccard_estimated;
+
+                    if (algoritmo == "KMH") {
+                        KMinHash kMinHash(k, m, seed);
+                        auto signature1 = kMinHash.computeSignature(coppia.first);
+                        auto signature2 = kMinHash.computeSignature(coppia.second);
+                        jaccard_estimated = JS::approx(signature1, signature2, k);
+                    }
+                    else if (algoritmo == "OPH") {
+                        OnePermutation oph(k, m, seed);
+                        auto signature1 = oph.computeSignature(coppia.first);
+                        auto signature2 = oph.computeSignature(coppia.second);
+                        jaccard_estimated = JS::approx(signature1, signature2, k);
+                    }
+                    else{
+                        FastSimilaritySketching fss(k, m, seed);
+                        auto signature1 = fss.computeSignature(coppia.first);
+                        auto signature2 = fss.computeSignature(coppia.second);
+                        jaccard_estimated = JS::approx(signature1, signature2, k);
+                    }
+
+                    file.open(output_file, std::ios::app);
+                    file << algoritmo << ";" << k << ";" << jaccard_exact << ";" 
+                         << rep + 1 << ";" << jaccard_estimated << "\n";
+                    file.close();
+                }
             }
         }
     }

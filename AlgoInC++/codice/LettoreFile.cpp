@@ -1,9 +1,9 @@
 #include "LettoreFile.h"
 
-
-
-void LettoreFile::read(std::string &filename, std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> &coppie)
-{
+std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> LettoreFile::read(std::string &filename)
+{   
+    std::vector<std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> coppie;
+    
     std::ifstream inFile(filename); // per aprire il file
     std::string line;               // per memorizzare ogni riga del file durante la lettura
     while (std::getline(inFile, line))
@@ -28,4 +28,6 @@ void LettoreFile::read(std::string &filename, std::vector<std::pair<std::vector<
 
         std::getline(inFile, line);
     }
+
+    return coppie;
 }

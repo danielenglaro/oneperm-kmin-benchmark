@@ -1,13 +1,9 @@
 #include <iostream>
-#include "LettoreFile.h"
-#include "StampaVettore.h"
-#include "JS.h"
 // #include "KMinHash.h"
 // #include "OnePermutation.h"
 // #include "FastSimilaritySketching.h"
 #include "Test.h"
 #include "Prime.h"
-#include <ctime>
 
 int main()
 {
@@ -27,23 +23,29 @@ int main()
     std::vector<int> k_range;
 
     // Ciclo per generare le potenze di 2 fino a 2^11
-    for (int i = 1; i <= 2048; i *= 2)
+    for (int i = 1; i <= 16; i *= 2)
     {
         k_range.push_back(i);
     }
 
-    // Esegui il test per analizzare il tempo in funzione di n
-    Test::test_time_vs_n(1000, n_range, 500, m);
+    // // Esegui il test per analizzare il tempo in funzione di n
+    // Test::test_time_vs_n(1000, n_range, 500, m);
 
-    // Esegui lo script Python per generare il grafico dei tempi in funzione di n
-    system("./venv/bin/python3 graficoTempo.py n");
+    // // Esegui lo script Python per generare il grafico dei tempi in funzione di n
+    // system("./venv/bin/python3 graficoTempo.py n");
 
-    system("open grafico_tempo_n.png");
+    // system("open grafico_tempo_n.png");
 
-    // Esegui il test per analizzare il tempo in funzione di k
-    Test::test_time_vs_k(k_range, 65000, 500, m);
+    // // Esegui il test per analizzare il tempo in funzione di k
+    // Test::test_time_vs_k(k_range, 65000, 500, m);
 
-    // Esegui lo script Python per generare il grafico dei tempi in funzione di k
-    system("./venv/bin/python3 graficoTempo.py k");
+    // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
+    // system("./venv/bin/python3 graficoTempo.py k");
 
-    system("open grafico_tempo_k.png");
+    // system("open grafico_tempo_k.png");
+
+    Test::test_quality(k_range, 5, m, 20);
+
+    
+
+}
