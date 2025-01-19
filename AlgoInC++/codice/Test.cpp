@@ -156,7 +156,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
     }
 }
 
-void Test::test_quality(std::vector<int> k_values, int repetitions, int m, int n) {
+void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m) {
     std::string output_file = "quality_results.csv";
 
     // Apri il file e scrivi l'header
@@ -172,18 +172,40 @@ void Test::test_quality(std::vector<int> k_values, int repetitions, int m, int n
     for (std::string algoritmo : algoritmi) {
         for (int k : k_values) {
             for (double jaccard_target : jaccard_values) {
-                std::cout << "\nsono qui!";
-                // Costruiamo il comando
-                std::string comando = "./venv/bin/python3 script.py 1 " + 
-                     std::to_string(n) + " " + 
-                     std::to_string(jaccard_target);
-                system(comando.c_str());
 
-                std::cout << "\nComando da eseguire: " << comando << std::endl;
-                system(comando.c_str());
-                std::cout << "\nsono anche qui!";
+                std::string esegui = "./venv/bin/python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target);
+                system(esegui.c_str());
 
-                std::string filename = "dataset_"+ std::to_string(jaccard_target) +".txt";
+                std::ostringstream ss;
+                ss << std::fixed << std::setprecision(1) << jaccard_target;
+                std::string filename = "dataset_" + ss.str() + ".txt";
+
+                    // Aspetta che il file esista e sia accessibile
+                    int tentativi = 0;
+                    const int max_tentativi = 10;
+                    bool file_pronto = false;
+
+                    while (tentativi < max_tentativi && !file_pronto) {
+                        std::ifstream check_file(filename);
+                        if (check_file.good()) {
+                            // Verifica che il file sia completo
+                            check_file.seekg(0, std::ios::end);
+                            if (check_file.tellg() > 0) {
+                                file_pronto = true;
+                                check_file.close();
+                                break;
+                            }
+                        }
+                        check_file.close();
+                        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Aspetta 100ms
+                        tentativi++;
+                    }
+
+                    if (!file_pronto) {
+                        // std::cerr << "Timeout: il file non è stato creato correttamente" << std::endl;
+                        continue;
+                    }
+
                 std::pair<std::vector<uint64_t>, std::vector<uint64_t>> coppia = LettoreFile::read(filename)[0];
                 float jaccard_exact = JS::esatta(coppia.first, coppia.second);
 

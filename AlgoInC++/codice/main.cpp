@@ -23,13 +23,13 @@ int main()
     std::vector<int> k_range;
 
     // Ciclo per generare le potenze di 2 fino a 2^11
-    for (int i = 1; i <= 16; i *= 2)
+    for (int i = 1; i <= 1024; i *= 2)
     {
         k_range.push_back(i);
     }
 
     // // Esegui il test per analizzare il tempo in funzione di n
-    // Test::test_time_vs_n(1000, n_range, 500, m);
+    // Test::test_time_vs_n(1000, n_range, 100, m);
 
     // // Esegui lo script Python per generare il grafico dei tempi in funzione di n
     // system("./venv/bin/python3 graficoTempo.py n");
@@ -37,15 +37,18 @@ int main()
     // system("open grafico_tempo_n.png");
 
     // // Esegui il test per analizzare il tempo in funzione di k
-    // Test::test_time_vs_k(k_range, 65000, 500, m);
+    // Test::test_time_vs_k(k_range, 50000, 100, m);
 
     // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
     // system("./venv/bin/python3 graficoTempo.py k");
 
     // system("open grafico_tempo_k.png");
 
-    Test::test_quality(k_range, 5, m, 20);
+    //prossimi test k 1024 n rep 100
+    Test::test_quality(k_range, 50000, 100, m);
+    system("./venv/bin/python3 graficoQualita.py n");
 
-    
-
+    system("open heatmap_quality_KMH.png");
+    system("open heatmap_quality_OPH.png");
+    system("open heatmap_quality_FSS.png");
 }

@@ -20,9 +20,8 @@
 #include "LettoreFile.h"  // Per la lettura dei file
 #include "JS.h"           // Per la gestione della Jaccard Similarity
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
+#include <chrono>
+#include <thread>
 
 class Test {
 private:
@@ -36,7 +35,7 @@ public:
     static void test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetitions, int m);
     static void test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetitions, int m);
     // Metodo statico per il test di qualità
-    static void test_quality(std::vector<int> k_values, int repetitions, int m, int n);
+    static void test_quality(std::vector<int> k_values, int n, int repetitions, int m);
 };
 
 #endif // TEST_H
