@@ -6,7 +6,12 @@
 FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t seed)
 {
     this->t = t;
-    funzioniHash = new HashFunction(t, seed);
+    vettoreFirme = std::vector<HashFunction *>(2*t, nullptr);
+    for (size_t i = 0; i < 2*t; ++i)
+    {
+        vettoreFirme[i] = new HashFunction(t, seed + i); // Semi diversi per ogni funzione hash
+    }
+    // funzioniHash = new HashFunction(t, seed);
 }
 
 std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64_t> s)
@@ -19,9 +24,10 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     for (size_t i = 0; i < 2 * t; i++)
     {
         for (size_t j = 0; j < lung; j++)
-        {
-            size_t b = (funzioniHash->map(s[j], i)).first;
-            double v = (funzioniHash->map(s[j], i)).second;
+        {   
+            std::pair<size_t, double> hashvalue = vettoreFirme[i]->map(s[j], i);
+            size_t b = hashvalue.first;
+            double v = hashvalue.second;
             // std::cout << "Elemento s[" << j << "]=" << s[j] << ", bin=" << b << ", valore=" << v << std::endl;
 
             if (signature[b] == std::numeric_limits<double>::max())

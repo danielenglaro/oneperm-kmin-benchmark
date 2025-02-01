@@ -6,7 +6,8 @@ class FastSimilaritySketching
 {
 private:
     size_t t;                   ///< Numero di bin.
-    HashFunction *funzioniHash; ///< Funzioni hash.
+    // HashFunction *funzioniHash; ///< Funzioni hash.
+    std::vector<HashFunction *> vettoreFirme; ///< Funzioni hash.
 
 public:
     /**
