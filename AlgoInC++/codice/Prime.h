@@ -6,10 +6,10 @@
 class Prime {
 public:
     // Verifica se un numero è primo
-    static bool isPrime(int n);
+    static bool isPrime(size_t n);
     
     // Trova il primo numero primo maggiore di num
-    static int nextPrime(int num);
+    static size_t nextPrime(size_t num);
 };
 
 #endif // PRIME_H

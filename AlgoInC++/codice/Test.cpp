@@ -76,7 +76,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 }
                 else if (algoritmo == "FSS")
                 {
-                    FastSimilaritySketching fss(k_fixed, m, seed);
+                    FastSimilaritySketching fss(k_fixed, seed);
                     fss.computeSignature(set);
                 }
                 auto end = std::chrono::high_resolution_clock::now();
@@ -139,7 +139,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 }
                 else if (algoritmo == "FSS")
                 {
-                    FastSimilaritySketching fss(k, m, seed);
+                    FastSimilaritySketching fss(k, seed);
                     fss.computeSignature(set);
                 }
 
@@ -227,7 +227,7 @@ void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m
                         jaccard_estimated = JS::approx(signature1, signature2, k);
                     }
                     else{
-                        FastSimilaritySketching fss(k, m, seed);
+                        FastSimilaritySketching fss(k, seed);
                         auto signature1 = fss.computeSignature(coppia.first);
                         auto signature2 = fss.computeSignature(coppia.second);
                         jaccard_estimated = JS::approx(signature1, signature2, k);

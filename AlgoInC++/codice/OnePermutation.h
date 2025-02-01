@@ -7,7 +7,6 @@ private:
     size_t k;               ///< Numero di bins.
     size_t m;               ///< Modulo per le funzioni hash.
     HashFunction *funzHash; ///< Funzioni hash.
-
 public:
     /**
      * Costruttore.

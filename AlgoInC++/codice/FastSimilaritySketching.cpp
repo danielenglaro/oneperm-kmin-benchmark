@@ -3,11 +3,10 @@
 #include <vector>
 #include "StampaVettore.h"
 
-FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t m, size_t seed)
+FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t seed)
 {
     this->t = t;
-    this->m = m;
-    funzioniHash = new HashFunction(m, seed, t);
+    funzioniHash = new HashFunction(t, seed);
 }
 
 std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64_t> s)

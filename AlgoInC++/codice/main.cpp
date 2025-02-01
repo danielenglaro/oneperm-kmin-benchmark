@@ -3,12 +3,12 @@
 // #include "OnePermutation.h"
 // #include "FastSimilaritySketching.h"
 #include "Test.h"
-#include "Prime.h"
+
 
 int main()
 {
     // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30
-    size_t m = Prime::nextPrime(1073741824);
+    size_t m = 1073741824;
 
     // Vettore per memorizzare le potenze di 2 per la dimensione n
     std::vector<int> n_range;
@@ -51,4 +51,5 @@ int main()
     system("open heatmap_quality_KMH.png");
     system("open heatmap_quality_OPH.png");
     system("open heatmap_quality_FSS.png");
+
 }

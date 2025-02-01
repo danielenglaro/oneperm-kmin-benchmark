@@ -5,18 +5,16 @@
 class FastSimilaritySketching
 {
 private:
-    size_t t;                     ///< Numero di bin.
-    size_t m;                     ///< Modulo per le funzioni hash.
+    size_t t;                   ///< Numero di bin.
     HashFunction *funzioniHash; ///< Funzioni hash.
 
 public:
     /**
      * Costruttore.
      * @param t: Numero di bin.
-     * @param m: Modulo per le funzioni hash.
      * @param seed: Semina per il generatore casuale.
      */
-    FastSimilaritySketching(size_t t, size_t m, size_t seed);
+    FastSimilaritySketching(size_t t, size_t seed);
 
     /**
      * Calcola la firma di un vettore.
