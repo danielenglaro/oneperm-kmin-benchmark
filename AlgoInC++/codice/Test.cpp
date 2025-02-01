@@ -51,6 +51,11 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
 
+    // Inizializza barra di loading
+    int total_iterations = algoritmi.size() * n_values.size() * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Tempo con k=" + std::to_string(k_fixed)+" --\n";
+
     for (std::string algoritmo : algoritmi)
     {
         for (int n : n_values)
@@ -87,9 +92,16 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 file.open(output_file, std::ios::app);
                 file << algoritmo << ";" << n << ";" << rep + 1 << ";" << duration << "\n";
                 file.close();
+
+                // Aggiorna progresso barra di caricamento
+                current_iteration++;
             }
+            // Aggiorna la barra di caricamento
+            int progress = static_cast<int>((static_cast<double>(current_iteration) / total_iterations) * 100);
+            std::cout << "\r    Progresso: " << progress << "%" << std::flush;
         }
     }
+    std::cout << "\nCompletato!" << std::endl;
 }
 
 // Funzione per testare il tempo di esecuzione in funzione di k (size dello sketch)
@@ -114,6 +126,11 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
     std::random_device rd;
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
+    // Inizializza barra di loading
+    int total_iterations = algoritmi.size() * k_values.size() * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Tempo con n=" + std::to_string(n_fixed)+" --\n";
 
     for (std::string algoritmo : algoritmi)
     {
@@ -151,9 +168,16 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 file.open(output_file, std::ios::app);
                 file << algoritmo << ";" << k << ";" << rep + 1 << ";" << duration << "\n";
                 file.close();
+
+                // Aggiorna progresso barra di caricamento
+                current_iteration++;
             }
+            // Aggiorna barra di loading
+            int progress = static_cast<int>((static_cast<double>(current_iteration) / total_iterations) * 100);
+            std::cout << "\r    Progresso: " << progress << "%" << std::flush;
         }
     }
+    std::cout << "\nCompletato!" << std::endl;
 }
 
 void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m) {
@@ -165,7 +189,7 @@ void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m
     file << "Algoritmo;K;Jaccard_reale;Ripetizione;Jaccard_stimata\n";
     file.close();
 
-    std::vector<double> jaccard_values = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+    std::vector<double> jaccard_values = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1};
 
     std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
 

@@ -4,23 +4,25 @@ import numpy as np
 import sys
 
 # Verifica che ci sia un argomento e che sia valido (n o k)
-if len(sys.argv) != 2 or sys.argv[1] not in ['n', 'k']:
+if len(sys.argv) != 3 or sys.argv[1] not in ['n', 'k']:
     print("Uso: python3 graficoTempo.py [n|k]")
     sys.exit(1)
 
-param = sys.argv[1]
+param_1 = sys.argv[1] # se n o k
+param_2 = sys.argv[2] # valore di k/n fissato
+
 
 # Determina il file da leggere
-if param == 'n':
+if param_1 == 'n':
     filename = 'time_results_n.csv'
     x_label = 'Dimensione (n)'
     dim_column = 'Dimensione (n)'
-    output_image = 'grafico_tempo_n.png'  # Nome del file di output per n
-else:  # param == 'k'
+    output_image = 'grafico_tempo_k='+param_2+'.png'  # Nome del file di output per n
+else:  # param_1 == 'k'
     filename = 'time_results_k.csv'
     x_label = 'Numero di funzioni hash (k)'
     dim_column = 'Dimensione (k)'
-    output_image = 'grafico_tempo_k.png'  # Nome del file di output per k
+    output_image = 'grafico_tempo_n='+param_2+'.png'  # Nome del file di output per k
 
 # Leggi il file CSV
 df = pd.read_csv(filename, sep=';')
@@ -57,7 +59,10 @@ plt.xticks(range(len(mean_times[dim_column].unique())),
 
 plt.xlabel(x_label)
 plt.ylabel('Tempo di esecuzione (microsecondi)')
-plt.title(f'Confronto delle prestazioni degli algoritmi in funzione di {param}')
+if param_1 == 'n':
+    plt.title(f'Confronto delle prestazioni degli algoritmi al variare di n,    con k (fissato) ='+param_2)
+else:
+    plt.title(f'Confronto delle prestazioni degli algoritmi al variare di k,    con n (fissato) ='+param_2)
 plt.grid(True, alpha=0.3)
 plt.legend()
 
