@@ -7,6 +7,11 @@
 
 int main()
 {
+    // Inizio del conteggio del tempo
+    auto start = std::chrono::high_resolution_clock::now();
+    //----------------------------------------------CRONOMETRO----------------------------------------------
+
+    
     // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30
     size_t m = 1073741824;
 
@@ -16,7 +21,7 @@ int main()
 
     // ---- TEST per analizzare il tempo al variare di n ----
     std::vector<int> n_range;
-    for (int i = 1; i <= 131072; i *= 2) n_range.push_back(i); // n range || Ciclo per generare le potenze di 2 fino a 2^17
+    for (int i = 10; i <= 1048576; i *= 2) n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
 
     std::vector<int> vettore_k_fissato = {16, 256, 4096, 65536};// k fissato a salti di 2^4
     for(int k_fissato : vettore_k_fissato){
@@ -31,9 +36,9 @@ int main()
 
     // ---- TEST per analizzare il tempo in funzione di k ----
     std::vector<int> k_range;
-    for (int i = 1; i <= 4096; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^12
+    for (int i = 1; i <= 65536; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
 
-    std::vector<int> vettore_n_fissato = {100, 1000}; // n fissato potenze di 10 da 10^2
+    std::vector<int> vettore_n_fissato = {100, 1000, 10000, 100000}; // n fissato potenze di 10 da 10^2
     for(int n_fissato : vettore_n_fissato){
         Test::test_time_vs_k(k_range, n_fissato, rep, m);
 
@@ -42,6 +47,11 @@ int main()
 
         // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
  }
+ 
+
+
+
+
 
 // ---- Esempio di utilizzo dell'algoritmo di separazione ----
     // size_t t =  ; // Dimensione dello sketch
@@ -77,5 +87,13 @@ int main()
 
 
 
+//----------------------------------------------CRONOMETRO----------------------------------------------
+    // Fine del conteggio del tempo
+    auto end = std::chrono::high_resolution_clock::now();
 
+    // Calcolo della durata
+    std::chrono::duration<double> duration = end - start;
+
+    // Stampa del tempo impiegato
+    std::cout << "\nTempo impiegato: " << duration.count() << " secondi\n" << std::endl;
 }
