@@ -18,7 +18,7 @@ int main()
     std::vector<int> n_range;
     for (int i = 1; i <= 131072; i *= 2) n_range.push_back(i); // n range || Ciclo per generare le potenze di 2 fino a 2^17
 
-    std::vector<int> vettore_k_fissato = {16, 256, 4096}; // k fissato a salti di 2^4
+    std::vector<int> vettore_k_fissato = {16, 256, 4096, 65536};// k fissato a salti di 2^4
     for(int k_fissato : vettore_k_fissato){
         Test::test_time_vs_n(k_fissato, n_range, rep, m);
 
@@ -41,15 +41,41 @@ int main()
         system( ("./venv/bin/python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
 
         // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
-    }
+ }
 
+// ---- Esempio di utilizzo dell'algoritmo di separazione ----
+    // size_t t =  ; // Dimensione dello sketch
+    // size_t r = ;  // Numero minimo di iterazioni
+    // double gamma = 0.5; // Soglia di similarità
 
-    // //prossimi test k 1024 n rep 100
+    // // Crea un'istanza di FastSimilaritySketching
+    // FastSimilaritySketching fss(t, 4);
+
+    // // Definisci due insiemi di esempio
+    // std::vector<uint64_t> setA = {1, 2, 3, 4, 5, 6}; // Insieme A
+    // std::vector<uint64_t> setB = {4, 5, 6};    // Insieme B
+
+    // // Calcola le firme per gli insiemi A e B
+    // std::vector<double> S_A = fss.computeSignature(setA);
+    // std::vector<double> S_B = fss.computeSignature(setB);
+
+    // // Esegui l'algoritmo di separazione
+    // bool result = fss.separationProcedure(r, gamma, S_A, S_B);
+    
+    // // Stampa il risultato
+    // std::cout << "Risultato della separazione per gli insiemi A e B: " 
+    //           << (result ? "true" : "false") << std::endl;
+
+    //prossimi test k 1024 n rep 100
     // Test::test_quality(vettore_k_fissato, 50000, rep, m);
     // system("./venv/bin/python3 graficoQualita.py n");
 
     // system("open heatmap_quality_KMH.png");
     // system("open heatmap_quality_OPH.png");
     // system("open heatmap_quality_FSS.png");
+
+
+
+
 
 }

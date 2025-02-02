@@ -23,4 +23,6 @@ public:
      * @return Firma come vettore di reali (double).
      */
     std::vector<double> computeSignature(std::vector<uint64_t> s);
+
+    bool separationProcedure(size_t r, double gamma, std::vector<double>& S_A, std::vector<double>& S_B);
 };

@@ -51,3 +51,22 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     // StampaVettore::printVector(signature);
     return signature;
 }
+
+// bool FastSimilaritySketching::separationProcedure(size_t r, double gamma, std::vector<double>& S_A, std::vector<double>& S_B) {
+//     int S = 0;
+//     size_t t = S_A.size();
+//     std::vector<int> X(t);
+//     for (size_t i = 0; i < t; ++i) {
+//         X[i] = (S_A[i] == S_B[i]) ? 1 : 0;
+//     }
+
+//     for (size_t i = 1; i <= t; ++i) {
+//         S += X[i - 1]; 
+//         std::cout << "Iterazione " << i << ": S = " << S << ", gamma = " << gamma << ", soglia = " << (i * gamma + std::cbrt(i * i)) << std::endl;
+
+//         if (i >= r && S <= i * gamma + std::cbrt(i * i)) {
+//             return false; 
+//         }
+//     }
+//     return true; 
+// }
