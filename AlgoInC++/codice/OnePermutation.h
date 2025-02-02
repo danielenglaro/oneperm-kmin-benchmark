@@ -1,12 +1,15 @@
 #include "HashFunction.h"
 #include <vector>
+#include <random>
 #include <limits>
+
 class OnePermutation
 {
 private:
     size_t k;               ///< Numero di bins.
     size_t m;               ///< Modulo per le funzioni hash.
-    HashFunction *funzHash; ///< Funzioni hash.
+    HashFunction *funzHash; ///< Funzione hash.
+    std::vector<bool> bit_vector;
 public:
     /**
      * Costruttore.
