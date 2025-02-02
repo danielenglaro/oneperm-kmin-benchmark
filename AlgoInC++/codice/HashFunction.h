@@ -12,13 +12,16 @@ private:
     size_t b; ///< Coefficiente additivo
     size_t m; ///< Modulo Universo / Dimensione Firma del FSS
     size_t p; ///< Numero primo maggiore di m
+    
+    size_t t;
+    size_t p_t;
 public:
     /**
      * Costruttore.
      * @param m: Modulo per la funzione hash.
      * @param seed: Semina per il generatore casuale.
      */
-    HashFunction(size_t m, size_t seed);
+    HashFunction(size_t m, size_t seed, size_t t = 0);
 
     /**
      * Mappa un elemento `x` utilizzando la funzione hash.

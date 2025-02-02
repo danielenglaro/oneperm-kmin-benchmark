@@ -81,7 +81,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 }
                 else if (algoritmo == "FSS")
                 {
-                    FastSimilaritySketching fss(k_fixed, seed);
+                    FastSimilaritySketching fss(k_fixed, m, seed);
                     fss.computeSignature(set);
                 }
                 auto end = std::chrono::high_resolution_clock::now();
@@ -156,7 +156,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 }
                 else if (algoritmo == "FSS")
                 {
-                    FastSimilaritySketching fss(k, seed);
+                    FastSimilaritySketching fss(k, m, seed);
                     fss.computeSignature(set);
                 }
 
@@ -180,24 +180,28 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
     std::cout << "\nCompletato!" << std::endl;
 }
 
-void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m) {
-    std::string output_file = "quality_results.csv";
+void Test::test_quality(int k, int n, int repetitions, int m) {
+    std::string output_file = "quality_results_k=" + std::to_string(k) + ".csv";
 
     // Apri il file e scrivi l'header
     std::ofstream file;
     file.open(output_file);
-    file << "Algoritmo;K;Jaccard_reale;Ripetizione;Jaccard_stimata\n";
+    file << "Algoritmo;Jaccard_reale;Ripetizione;Jaccard_stimata\n";
     file.close();
 
     std::vector<double> jaccard_values = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1};
 
     std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
 
+    // Inizializza barra di loading
+    int total_iterations = algoritmi.size() * jaccard_values.size() * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Qualità con k=" + std::to_string(k)+" --\n";
+
     for (std::string algoritmo : algoritmi) {
-        for (int k : k_values) {
             for (double jaccard_target : jaccard_values) {
 
-                std::string esegui = "./venv/bin/python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target);
+                std::string esegui = "python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target);
                 system(esegui.c_str());
 
                 std::ostringstream ss;
@@ -251,18 +255,25 @@ void Test::test_quality(std::vector<int> k_values, int n, int repetitions, int m
                         jaccard_estimated = JS::approx(signature1, signature2, k);
                     }
                     else{
-                        FastSimilaritySketching fss(k, seed);
+                        FastSimilaritySketching fss(k, m, seed);
                         auto signature1 = fss.computeSignature(coppia.first);
                         auto signature2 = fss.computeSignature(coppia.second);
                         jaccard_estimated = JS::approx(signature1, signature2, k);
                     }
 
                     file.open(output_file, std::ios::app);
-                    file << algoritmo << ";" << k << ";" << jaccard_exact << ";" 
+                    file << algoritmo << ";" << jaccard_exact << ";" 
                          << rep + 1 << ";" << jaccard_estimated << "\n";
                     file.close();
+
+
+                    // Aggiorna progresso barra di caricamento
+                    current_iteration++;
                 }
+
+                // Aggiorna barra di loading
+                int progress = static_cast<int>((static_cast<double>(current_iteration) / total_iterations) * 100);
+                std::cout << "\r    Progresso: " << progress << "%" << std::flush;
             }
-        }
     }
 }

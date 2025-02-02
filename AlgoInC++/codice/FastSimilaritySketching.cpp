@@ -3,13 +3,13 @@
 #include <vector>
 #include "StampaVettore.h"
 
-FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t seed)
+FastSimilaritySketching::FastSimilaritySketching(size_t t, size_t m, size_t seed)
 {
     this->t = t;
     vettoreFirme = std::vector<HashFunction *>(2*t, nullptr);
-    for (size_t i = 0; i < 2*t; ++i)
+    for (size_t i = 0; i < 2*t; i++)
     {
-        vettoreFirme[i] = new HashFunction(t, seed + i); // Semi diversi per ogni funzione hash
+        vettoreFirme[i] = new HashFunction(m, seed + i, t); // Semi diversi per ogni funzione hash
     }
     // funzioniHash = new HashFunction(t, seed);
 }
@@ -21,7 +21,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     size_t c = 0;
     // std::cout << "[DEBUG] Inizio calcolo signature per vettore di lunghezza " << lung << std::endl;
 
-    for (size_t i = 0; i < 2 * t; i++)
+    for (size_t i = 0; i < 2*t; i++)
     {
         for (size_t j = 0; j < lung; j++)
         {   
@@ -40,7 +40,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
             {
                 // std::cout << "Aggiornamento signature[" << b << "] da " << signature[b] << " a " << v << std::endl;
                 signature[b] = v;
-                // std::cout << "\naggiornamento firma: "; //qui non lo è piu
+                
             }
         }
         if (c == t){
@@ -48,7 +48,6 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
         break;
         }
     }
-    // StampaVettore::printVector(signature);
     return signature;
 }
 

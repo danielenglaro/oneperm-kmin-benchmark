@@ -15,7 +15,7 @@ public:
      * @param t: Numero di bin.
      * @param seed: Semina per il generatore casuale.
      */
-    FastSimilaritySketching(size_t t, size_t seed);
+    FastSimilaritySketching(size_t t, size_t m, size_t seed);
 
     /**
      * Calcola la firma di un vettore.

@@ -19,36 +19,50 @@ int main()
     int rep = 100;
 
 
+
+
     // ---- TEST per analizzare il tempo al variare di n ----
     std::vector<int> n_range;
-    for (int i = 10; i <= 1048576; i *= 2) n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
+    for (int i = (1 << 10); i <= (1 << 20); i *= 2) {
+        n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
 
-    std::vector<int> vettore_k_fissato = {16, 256, 4096, 65536};// k fissato a salti di 2^4
+    std::vector<int> vettore_k_fissato = { 16,256,4096};// k fissato a salti di 2^4
     for(int k_fissato : vettore_k_fissato){
         Test::test_time_vs_n(k_fissato, n_range, rep, m);
 
         // Esegui lo script Python per generare il grafico dei tempi in funzione di n
-        system( ("./venv/bin/python3 graficoTempo.py n " + std::to_string(k_fissato)).c_str() );
+        system( ("python3 graficoTempo.py n " + std::to_string(k_fissato)).c_str() );
 
         // system( ("open grafico_tempo_k=" + std::to_string(k_fissato) + ".png").c_str() );
     }
 
 
+
+
     // ---- TEST per analizzare il tempo in funzione di k ----
     std::vector<int> k_range;
-    for (int i = 1; i <= 65536; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
+    for (int i = 1; i <= 8192; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
 
-    std::vector<int> vettore_n_fissato = {100, 1000, 10000, 100000}; // n fissato potenze di 10 da 10^2
+    std::vector<int> vettore_n_fissato = {10000, 100000, 1000000 }; // n fissato potenze di 10 da 10^2
     for(int n_fissato : vettore_n_fissato){
         Test::test_time_vs_k(k_range, n_fissato, rep, m);
 
         // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
-        system( ("./venv/bin/python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
+        system( ("python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
 
         // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
- }
- 
+    }
 
+
+    
+    // ---- TEST per analizzare la qualità ----
+    // int n = 50000;
+    // for(int k_fissato : vettore_k_fissato){
+    //         Test::test_quality(k_fissato, n, rep, m);
+
+    //         // Esegui lo script Python per generare il grafico dei tempi in funzione di n
+    //         system(("python3 graficoQualita.py " + std::to_string(k_fissato)).c_str());
+    //     }
 
 
 
@@ -76,14 +90,6 @@ int main()
     // std::cout << "Risultato della separazione per gli insiemi A e B: " 
     //           << (result ? "true" : "false") << std::endl;
 
-    //prossimi test k 1024 n rep 100
-    // Test::test_quality(vettore_k_fissato, 50000, rep, m);
-    // system("./venv/bin/python3 graficoQualita.py n");
-
-    // system("open heatmap_quality_KMH.png");
-    // system("open heatmap_quality_OPH.png");
-    // system("open heatmap_quality_FSS.png");
-
 
 
 
@@ -96,4 +102,7 @@ int main()
 
     // Stampa del tempo impiegato
     std::cout << "\nTempo impiegato: " << duration.count() << " secondi\n" << std::endl;
+
+
+
 }
