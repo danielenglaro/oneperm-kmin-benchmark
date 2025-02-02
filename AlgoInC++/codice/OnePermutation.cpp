@@ -16,7 +16,7 @@ OnePermutation::OnePermutation(size_t k, size_t m, size_t seed)
     std::uniform_int_distribution<> dis(0, 1);  // Distribuzione uniforme tra 0 e 1
 
     // Popola il vettore con valori casuali
-    for (int j = 0; j < k; ++j) {
+    for (size_t j = 0; j < k; ++j) {
         bit_vector[j] = dis(gen);  // Assegna 0 o 1 casualmente
     }
 }
