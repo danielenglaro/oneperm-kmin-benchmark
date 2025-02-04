@@ -16,15 +16,13 @@ KMinHash::KMinHash(size_t k, size_t m, size_t seed)
 std::vector<double> KMinHash::computeSignature(std::vector<uint64_t> s)
 {
     std::vector<double> signature(k, std::numeric_limits<double>::max() );
-    size_t lung = s.size();
-    for (size_t i = 0; i < k; i++)
+    
+    for (uint64_t elem : s)
     {
-        for (size_t j = 0; j < lung; j++)
-        {
-            if (vettoreFirme[i]->map(s[j]) < signature[i])
-            {
-                signature[i] = vettoreFirme[i]->map(s[j]);
-            }
+        for (size_t i = 0; i < k; i++)
+        {   
+            size_t hash_value = vettoreFirme[i]->map(elem);
+            if ( hash_value < signature[i]) signature[i] = hash_value;
         }
     }
     return signature;

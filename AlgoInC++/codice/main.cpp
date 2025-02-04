@@ -25,7 +25,7 @@ int main()
     std::vector<int> n_range;
     for (int i = (1 << 10); i <= (1 << 20); i *= 2) {
         n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
-
+    }
     std::vector<int> vettore_k_fissato = { 16,256,4096};// k fissato a salti di 2^4
     for(int k_fissato : vettore_k_fissato){
         Test::test_time_vs_n(k_fissato, n_range, rep, m);
@@ -39,19 +39,19 @@ int main()
 
 
 
-    // ---- TEST per analizzare il tempo in funzione di k ----
-    std::vector<int> k_range;
-    for (int i = 1; i <= 8192; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
+    // // ---- TEST per analizzare il tempo in funzione di k ----
+    // std::vector<int> k_range;
+    // for (int i = 1; i <= 8192; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
 
-    std::vector<int> vettore_n_fissato = {10000, 100000, 1000000 }; // n fissato potenze di 10 da 10^2
-    for(int n_fissato : vettore_n_fissato){
-        Test::test_time_vs_k(k_range, n_fissato, rep, m);
+    // std::vector<int> vettore_n_fissato = {10000, 100000, 1000000 }; // n fissato potenze di 10 da 10^2
+    // for(int n_fissato : vettore_n_fissato){
+    //     Test::test_time_vs_k(k_range, n_fissato, rep, m);
 
-        // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
-        system( ("python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
+    //     // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
+    //     system( ("python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
 
-        // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
-    }
+    //     // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
+    // }
 
 
     
