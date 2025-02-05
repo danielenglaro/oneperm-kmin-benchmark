@@ -12,9 +12,10 @@ private:
     size_t b; ///< Coefficiente additivo
     size_t m; ///< Modulo Universo / Dimensione Firma del FSS
     size_t p; ///< Numero primo maggiore di m
-    
     size_t t;
     size_t p_t;
+    size_t a_t;
+    size_t b_t;
 public:
     /**
      * Costruttore.

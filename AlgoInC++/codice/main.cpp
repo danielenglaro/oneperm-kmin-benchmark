@@ -21,12 +21,11 @@ int main()
 
 
 
-    // ---- TEST per analizzare il tempo al variare di n ----
+    // // ---- TEST per analizzare il tempo al variare di n ----
     std::vector<int> n_range;
-    for (int i = (1 << 10); i <= (1 << 20); i *= 2) {
-        n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
+    for (int i = (1 << 10); i <= (1 << 20); i *= 2) n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
 
-    std::vector<int> vettore_k_fissato = { 16,256,4096};// k fissato a salti di 2^4
+     std::vector<int> vettore_k_fissato = { 16,256,4096};// k fissato a salti di 2^4
     for(int k_fissato : vettore_k_fissato){
         Test::test_time_vs_n(k_fissato, n_range, rep, m);
 
@@ -40,22 +39,22 @@ int main()
 
 
     // ---- TEST per analizzare il tempo in funzione di k ----
-    std::vector<int> k_range;
-    for (int i = 1; i <= 8192; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
+    // std::vector<int> k_range;
+    // for (int i = 1; i <= 8192; i *= 2) k_range.push_back(i); // k range || Ciclo per generare le potenze di 2 fino a 2^16
 
-    std::vector<int> vettore_n_fissato = {10000, 100000, 1000000 }; // n fissato potenze di 10 da 10^2
-    for(int n_fissato : vettore_n_fissato){
-        Test::test_time_vs_k(k_range, n_fissato, rep, m);
+    // std::vector<int> vettore_n_fissato = {10, 100, 1000, 10000, 100000, 1000000 }; // n fissato potenze di 10 da 10^2
+    // for(int n_fissato : vettore_n_fissato){
+    //     Test::test_time_vs_k(k_range, n_fissato, rep, m);
 
-        // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
-        system( ("python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
+    //     // // Esegui lo script Python per generare il grafico dei tempi in funzione di k
+    //     system( ("python3 graficoTempo.py k " + std::to_string(n_fissato)).c_str() );
 
-        // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
-    }
+    //     // system( ("open grafico_tempo_n=" + std::to_string(n_fissato) + ".png").c_str() );
+    // }
 
 
     
-    // ---- TEST per analizzare la qualità ----
+    // // ---- TEST per analizzare la qualità ----
     // int n = 50000;
     // for(int k_fissato : vettore_k_fissato){
     //         Test::test_quality(k_fissato, n, rep, m);
@@ -67,31 +66,34 @@ int main()
 
 
 
-// ---- Esempio di utilizzo dell'algoritmo di separazione ----
-    // size_t t =  ; // Dimensione dello sketch
-    // size_t r = ;  // Numero minimo di iterazioni
-    // double gamma = 0.5; // Soglia di similarità
+// // ---- Esempio di utilizzo dell'algoritmo di separazione ----
+//     size_t t =  ; // Dimensione dello sketch
+//     size_t r = ;  // Numero minimo di iterazioni
+//     double gamma = 0.5; // Soglia di similarità
 
-    // // Crea un'istanza di FastSimilaritySketching
-    // FastSimilaritySketching fss(t, 4);
+//     // Crea un'istanza di FastSimilaritySketching
+//     FastSimilaritySketching fss(t, 4);
 
-    // // Definisci due insiemi di esempio
-    // std::vector<uint64_t> setA = {1, 2, 3, 4, 5, 6}; // Insieme A
-    // std::vector<uint64_t> setB = {4, 5, 6};    // Insieme B
+//     // Definisci due insiemi di esempio
+//     std::vector<uint64_t> setA = {1, 2, 3, 4, 5, 6}; // Insieme A
+//     std::vector<uint64_t> setB = {4, 5, 6};    // Insieme B
 
-    // // Calcola le firme per gli insiemi A e B
-    // std::vector<double> S_A = fss.computeSignature(setA);
-    // std::vector<double> S_B = fss.computeSignature(setB);
+//     // Calcola le firme per gli insiemi A e B
+//     std::vector<double> S_A = fss.computeSignature(setA);
+//     std::vector<double> S_B = fss.computeSignature(setB);
 
-    // // Esegui l'algoritmo di separazione
-    // bool result = fss.separationProcedure(r, gamma, S_A, S_B);
+//     // Esegui l'algoritmo di separazione
+//     bool result = fss.separationProcedure(r, gamma, S_A, S_B);
     
-    // // Stampa il risultato
-    // std::cout << "Risultato della separazione per gli insiemi A e B: " 
-    //           << (result ? "true" : "false") << std::endl;
+//     // Stampa il risultato
+//     std::cout << "Risultato della separazione per gli insiemi A e B: " 
+//               << (result ? "true" : "false") << std::endl;
 
 
-
+    // FastSimilaritySketching sketching(5, m, 40); // Esempio di inizializzazione
+    // std::string filename = "dataset_0.5.txt"; // Nome del file generato dallo script Python
+    // runTests(sketching, filename);
+    // return 0;
 
 //----------------------------------------------CRONOMETRO----------------------------------------------
     // Fine del conteggio del tempo

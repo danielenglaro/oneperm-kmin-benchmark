@@ -24,7 +24,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     for (size_t i = 0; i < 2*t; i++)
     {
         for (size_t j = 0; j < lung; j++)
-        {   
+        { 
             std::pair<size_t, double> hashvalue = vettoreFirme[i]->map(s[j], i);
             size_t b = hashvalue.first;
             double v = hashvalue.second;
@@ -36,12 +36,7 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
                 // std::cout << "Primo valore nel bin " << b << ", incremento c a " << c << std::endl;
             }
             // std::cout << "\nb: " << b << "\nv: " << v; //qui v è un valore con la virgola
-            if (v < signature[b])
-            {
-                // std::cout << "Aggiornamento signature[" << b << "] da " << signature[b] << " a " << v << std::endl;
-                signature[b] = v;
-                
-            }
+            signature[b] = std::min(signature[b], v);
         }
         if (c == t){
             // std::cout << "[C HA RAGGIUNTO T]" << std::endl;
@@ -51,17 +46,31 @@ std::vector<double> FastSimilaritySketching::computeSignature(std::vector<uint64
     return signature;
 }
 
+
+
+
+
+
+
+
+
+
+
+
 // bool FastSimilaritySketching::separationProcedure(size_t r, double gamma, std::vector<double>& S_A, std::vector<double>& S_B) {
 //     int S = 0;
 //     size_t t = S_A.size();
-//     std::vector<int> X(t);
+//     std::vector<uint64_t> X(t);
+//     StampaVettore::printVector(S_A);
+//     StampaVettore::printVector(S_B);
 //     for (size_t i = 0; i < t; ++i) {
 //         X[i] = (S_A[i] == S_B[i]) ? 1 : 0;
 //     }
+//     StampaVettore::printVector(X);
 
 //     for (size_t i = 1; i <= t; ++i) {
 //         S += X[i - 1]; 
-//         std::cout << "Iterazione " << i << ": S = " << S << ", gamma = " << gamma << ", soglia = " << (i * gamma + std::cbrt(i * i)) << std::endl;
+//         // std::cout << "Iterazione " << i << ": S = " << S << ", gamma = " << gamma << ", soglia = " << (i * gamma + std::cbrt(i * i)) << std::endl;
 
 //         if (i >= r && S <= i * gamma + std::cbrt(i * i)) {
 //             return false; 
