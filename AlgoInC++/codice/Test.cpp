@@ -69,22 +69,18 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
 
                 size_t seed = dis(gen);
 
+                KMinHash* kMinHash;
+                OnePermutation* oph;
+                FastSimilaritySketching* fss;
+
+                if (algoritmo == "KMH") kMinHash = new KMinHash(k_fixed, m, seed);
+                else if (algoritmo == "OPH") oph = new OnePermutation(k_fixed, m, seed);
+                else if (algoritmo == "FSS") fss = new FastSimilaritySketching(k_fixed, m, seed);
+
                 auto start = std::chrono::high_resolution_clock::now();
-                if (algoritmo == "KMH")
-                {
-                    KMinHash kMinHash(k_fixed, m, seed);
-                    kMinHash.computeSignature(set);
-                }
-                else if (algoritmo == "OPH")
-                {
-                    OnePermutation oph(k_fixed, m, seed);
-                    oph.computeSignature(set);
-                }
-                else if (algoritmo == "FSS")
-                {
-                    FastSimilaritySketching fss(k_fixed, m, seed);
-                    fss.computeSignature(set);
-                }
+                if (algoritmo == "KMH") kMinHash->computeSignature(set);
+                else if (algoritmo == "OPH") oph->computeSignature(set);
+                else if (algoritmo == "FSS") fss->computeSignature(set);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -144,23 +140,19 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
             {
 
                 size_t seed = dis(gen);
-                auto start = std::chrono::high_resolution_clock::now();
-                if (algoritmo == "KMH")
-                {
-                    KMinHash kMinHash(k, m, seed);
-                    kMinHash.computeSignature(set);
-                }
-                else if (algoritmo == "OPH")
-                {
-                    OnePermutation oph(k, m, seed);
-                    oph.computeSignature(set);
-                }
-                else if (algoritmo == "FSS")
-                {
-                    FastSimilaritySketching fss(k, m, seed);
-                    fss.computeSignature(set);
-                }
 
+                KMinHash* kMinHash;
+                OnePermutation* oph;
+                FastSimilaritySketching* fss;
+
+                if (algoritmo == "KMH") kMinHash = new KMinHash(k, m, seed);
+                else if (algoritmo == "OPH") oph = new OnePermutation(k, m, seed);
+                else if (algoritmo == "FSS") fss = new FastSimilaritySketching(k, m, seed);
+
+                auto start = std::chrono::high_resolution_clock::now();
+                if (algoritmo == "KMH") kMinHash->computeSignature(set);
+                else if (algoritmo == "OPH") oph->computeSignature(set);
+                else if (algoritmo == "FSS") fss->computeSignature(set);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();

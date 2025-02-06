@@ -6,23 +6,23 @@
 class OnePermutation
 {
 private:
-    size_t k;               ///< Numero di bins.
-    size_t m;               ///< Modulo per le funzioni hash.
-    HashFunction *funzHash; ///< Funzione hash.
-    std::vector<bool> bit_vector;
+    size_t k;                     ///< Numero di bin dello sketch (dimensione dello sketch).
+    size_t m;                     ///< Modulo per le funzioni hash (dimensione dell'universo U).
+    HashFunction *funzHash;       ///< Puntatore alla funzione hash (estratta casualmente).
+    std::vector<bool> bit_vector; ///< Vettore binario (random) usato per la densificazione delle firme.
 public:
     /**
-     * Costruttore.
-     * @param k: Numero di funzioni hash.
-     * @param m: Modulo per le funzioni hash.
-     * @param seed: Semina per il generatore casuale.
+     * Costruttore della classe OnePermutation.
+     * @param k: Numero di bin dello sketch (dimensione dello sketch).
+     * @param m: Modulo per le funzioni hash (dimensione dell'universo U).
+     * @param seed: Seme per il generatore di numeri casuali utilizzato per la funzione hash.
      */
     OnePermutation(size_t k, size_t m, size_t seed);
 
     /**
-     * Calcola la firma k-minHash di un vettore.
-     * @param s: Vettore di input.
-     * @return Firma k-minHash come vettore di interi.
+     * Calcola la firma OH di un vettore.
+     * @param s: Vettore del set di input.
+     * @return Firma OPH come vettore di interi.
      */
-    std::vector<double> computeSignature(std::vector<uint64_t> s);
+    std::vector<uint64_t> computeSignature(std::vector<uint64_t> s);
 };
