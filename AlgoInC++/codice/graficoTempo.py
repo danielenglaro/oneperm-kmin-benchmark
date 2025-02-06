@@ -13,13 +13,13 @@ param_2 = sys.argv[2] # valore di k/n fissato
 
 
 # Determina il file da leggere
-if param_1 == 'n':
-    filename = 'time_results_n.csv'
+if param_1 == 'k':
+    filename = 'time_results_k='+param_2+'.csv'
     x_label = 'Dimensione (n)'
     dim_column = 'Dimensione (n)'
     output_image = 'grafico_tempo_k='+param_2+'.png'  # Nome del file di output per n
-else:  # param_1 == 'k'
-    filename = 'time_results_k.csv'
+else:  # param_1 == 'n'
+    filename = 'time_results_n='+param_2+'.csv'
     x_label = 'Numero di funzioni hash (k)'
     dim_column = 'Dimensione (k)'
     output_image = 'grafico_tempo_n='+param_2+'.png'  # Nome del file di output per k
@@ -34,7 +34,7 @@ mean_times = df.groupby(['Algoritmo', dim_column])['Tempo di esecuzione'].mean()
 plt.figure(figsize=(12, 8))
 
 # Definisce i colori per ogni algoritmo
-colors = {'KMH': 'blue', 'OPH': 'red', 'FSS': 'green'}
+colors = {'KMH': 'red', 'OPH': 'green', 'OPH_ROT': 'blue'}
 
 for algo in mean_times['Algoritmo'].unique():
     # Filtra i dati per l'algoritmo corrente

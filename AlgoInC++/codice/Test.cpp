@@ -1,6 +1,5 @@
 #include "Test.h"
 
-
 // Funzione per generare un set di numeri casuali unici
 // Input:
 // - n: dimensione del set da generare
@@ -37,7 +36,7 @@ std::vector<uint64_t> Test::generate_random_set(int n, int m)
 // - Scrive i risultati dei test in un file CSV chiamato "time_results_n.csv"
 void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetitions, int m)
 {
-    std::string output_file = "time_results_n.csv";
+    std::string output_file = "time_results_k=" + std::to_string(k_fixed) + ".csv";
 
     // Apri il file e scrivi l'header
     std::ofstream file;
@@ -69,15 +68,16 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
 
                 size_t seed = dis(gen);
 
-                KMinHash* kMinHash;
-                OnePermutation* oph;
+                std::unique_ptr<KMinHash> kMinHash;
+                std::unique_ptr<OnePermutation> oph;
 
-                if (algoritmo == "KMH") kMinHash = new KMinHash(k_fixed, m, seed);
-                else if (algoritmo == "OPH") oph = new OnePermutation(k_fixed, m, seed);
+                if (algoritmo == "KMH") kMinHash = std::make_unique<KMinHash>(k_fixed, m, seed); //queste due righe prendono un boato
+                else oph = std::make_unique<OnePermutation>(k_fixed, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (algoritmo == "KMH") kMinHash->computeSignature(set);
-                else if (algoritmo == "OPH") oph->computeSignature(set,true);
+                else if (algoritmo == "OPH") oph->computeSignature(set,false);
+                else if (algoritmo == "OPH_ROT") oph->computeSignature(set,true);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -108,7 +108,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
 // - Scrive i risultati dei test in un file CSV chiamato "time_results_k.csv"
 void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetitions, int m)
 {
-    std::string output_file = "time_results_k.csv";
+    std::string output_file = "time_results_n=" + std::to_string(n_fixed) + ".csv";
 
     std::ofstream file;
     file.open(output_file);
@@ -142,11 +142,12 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
                 OnePermutation* oph;
 
                 if (algoritmo == "KMH") kMinHash = new KMinHash(k, m, seed);
-                else if (algoritmo == "OPH") oph = new OnePermutation(k, m, seed);
+                else oph = new OnePermutation(k, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (algoritmo == "KMH") kMinHash->computeSignature(set);
-                else if (algoritmo == "OPH") oph->computeSignature(set, true);
+                else if (algoritmo == "OPH") oph->computeSignature(set, false);
+                else if (algoritmo == "OPH_ROT") oph->computeSignature(set, true);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -236,6 +237,12 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                         jaccard_estimated = JS::approx(signature1, signature2, k);
                     }
                     else if (algoritmo == "OPH") {
+                        OnePermutation oph(k, m, seed);
+                        auto signature1 = oph.computeSignature(coppia.first, false);
+                        auto signature2 = oph.computeSignature(coppia.second, false);
+                        jaccard_estimated = JS::approx(signature1, signature2, k);
+                    }
+                    else if (algoritmo == "OPH_ROT") {
                         OnePermutation oph(k, m, seed);
                         auto signature1 = oph.computeSignature(coppia.first, true);
                         auto signature2 = oph.computeSignature(coppia.second, true);

@@ -5,3 +5,5 @@
 .DS_Store
 .vs/
 .vscode/
+*.png
+*.csv

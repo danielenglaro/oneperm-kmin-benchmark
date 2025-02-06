@@ -10,6 +10,7 @@
 #include <string>
 #include <ctime>
 #include <cstdint>
+#include <memory>  // Necessario per gli smart pointer
 
 // Include le classi degli algoritmi
 #include "KMinHash.h"
