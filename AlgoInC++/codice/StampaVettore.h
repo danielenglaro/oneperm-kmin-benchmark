@@ -6,9 +6,6 @@
  */
 class StampaVettore
 {
-private:
 public:
     static void printVector(const std::vector<uint64_t> &vettore);
-
-    static void printVector(const std::vector<double> &vettore);
 };

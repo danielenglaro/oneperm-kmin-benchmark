@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
     // Converto il parametro in intero
     int x = atoi(argv[1]);
     
-    // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30
-    size_t m = 1073741824;
+    // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^31
+    size_t m = 2147483648;
 
     //imposta ripetizioni esperimenti
     int rep = 100;

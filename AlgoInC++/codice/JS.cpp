@@ -13,19 +13,6 @@ float JS::approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k)
     return static_cast<float>(count) / k;
 }
 
-float JS::approx(std::vector<double> s1, std::vector<double> s2, int k)
-{
-    size_t count = 0;
-    for (int i = 0; i < k; i++)
-    {
-        if (s1[i] == s2[i])
-        {
-            count++;
-        }
-    }
-    return static_cast<float>(count) / k;
-}
-
 float JS::esatta(std::vector<uint64_t> set1, std::vector<uint64_t> set2)
 {
     std::vector<uint64_t> unione, intersezione;

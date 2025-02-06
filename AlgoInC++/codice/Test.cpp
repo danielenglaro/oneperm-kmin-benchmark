@@ -45,7 +45,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
     file << "Algoritmo;Dimensione (n);Funzione hash;Tempo di esecuzione\n";
     file.close();
 
-    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "OPH_ROT"};
 
     // Inizializza il generatore di numeri casuali
     std::random_device rd;
@@ -71,16 +71,13 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
 
                 KMinHash* kMinHash;
                 OnePermutation* oph;
-                FastSimilaritySketching* fss;
 
                 if (algoritmo == "KMH") kMinHash = new KMinHash(k_fixed, m, seed);
                 else if (algoritmo == "OPH") oph = new OnePermutation(k_fixed, m, seed);
-                else if (algoritmo == "FSS") fss = new FastSimilaritySketching(k_fixed, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (algoritmo == "KMH") kMinHash->computeSignature(set);
-                else if (algoritmo == "OPH") oph->computeSignature(set);
-                else if (algoritmo == "FSS") fss->computeSignature(set);
+                else if (algoritmo == "OPH") oph->computeSignature(set,true);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -118,7 +115,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
     file << "Algoritmo;Dimensione (k);Funzione hash;Tempo di esecuzione\n";
     file.close();
 
-    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "OPH_ROT"};
 
     std::random_device rd;
     std::mt19937_64 gen(rd());
@@ -143,16 +140,13 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
 
                 KMinHash* kMinHash;
                 OnePermutation* oph;
-                FastSimilaritySketching* fss;
 
                 if (algoritmo == "KMH") kMinHash = new KMinHash(k, m, seed);
                 else if (algoritmo == "OPH") oph = new OnePermutation(k, m, seed);
-                else if (algoritmo == "FSS") fss = new FastSimilaritySketching(k, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (algoritmo == "KMH") kMinHash->computeSignature(set);
-                else if (algoritmo == "OPH") oph->computeSignature(set);
-                else if (algoritmo == "FSS") fss->computeSignature(set);
+                else if (algoritmo == "OPH") oph->computeSignature(set, true);
                 auto end = std::chrono::high_resolution_clock::now();
 
                 double duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -184,7 +178,7 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
 
     std::vector<double> jaccard_values = {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1};
 
-    std::vector<std::string> algoritmi = {"KMH", "OPH", "FSS"};
+    std::vector<std::string> algoritmi = {"KMH", "OPH", "OPH_ROT"};
 
     // Inizializza barra di loading
     int total_iterations = algoritmi.size() * jaccard_values.size() * repetitions;
@@ -233,7 +227,7 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                 for (int rep = 0; rep < repetitions; rep++) {
                     
                     size_t seed = rep;
-                    float jaccard_estimated;
+                    float jaccard_estimated = -1;
 
                     if (algoritmo == "KMH") {
                         KMinHash kMinHash(k, m, seed);
@@ -243,14 +237,8 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                     }
                     else if (algoritmo == "OPH") {
                         OnePermutation oph(k, m, seed);
-                        auto signature1 = oph.computeSignature(coppia.first);
-                        auto signature2 = oph.computeSignature(coppia.second);
-                        jaccard_estimated = JS::approx(signature1, signature2, k);
-                    }
-                    else{
-                        FastSimilaritySketching fss(k, m, seed);
-                        auto signature1 = fss.computeSignature(coppia.first);
-                        auto signature2 = fss.computeSignature(coppia.second);
+                        auto signature1 = oph.computeSignature(coppia.first, true);
+                        auto signature2 = oph.computeSignature(coppia.second, true);
                         jaccard_estimated = JS::approx(signature1, signature2, k);
                     }
 

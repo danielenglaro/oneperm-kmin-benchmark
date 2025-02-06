@@ -23,7 +23,7 @@ OnePermutation::OnePermutation(size_t k, size_t m, size_t seed)
     }
 }
 
-std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s)
+std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> set, bool rotazione)
 {
     // Inizializzazione
     std::vector<uint64_t> signature(k, UINT64_MAX);
@@ -31,7 +31,7 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s)
     size_t C = range + 1;
 
     // Costruzione Firma
-    for (uint64_t e : s)
+    for (uint64_t e : set)
     {
         size_t v = funzHash->map(e);
         size_t i = v / range;
@@ -40,20 +40,22 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> s)
     }
 
     // Densificazione Per Rotazione
-    for (size_t j = 0; j < k; j++)
-    {
-        if (signature[j] == std::numeric_limits<double>::max())
+    if (rotazione){
+        for (size_t j = 0; j < k; j++)
         {
-            size_t start = j, step = 1, currentIndex;
-            while (true)
+            if (signature[j] == std::numeric_limits<double>::max())
             {
-                currentIndex = (bit_vector[j]) ? (start + step) % k : (start - step + k) % k;
+                size_t start = j, step = 1, currentIndex;
+                while (true)
+                {
+                    currentIndex = (bit_vector[j]) ? (start + step) % k : (start - step + k) % k;
 
-                if (signature[currentIndex] != UINT64_MAX && signature[currentIndex] < range) break; // Esci se trovi un valore valido
+                    if (signature[currentIndex] != UINT64_MAX && signature[currentIndex] < range) break; // Esci se trovi un valore valido
 
-                step++;
+                    step++;
+                }
+                signature[j] = signature[currentIndex] + (step * C);
             }
-            signature[j] = signature[currentIndex] + (step * C);
         }
     }
     return signature;

@@ -21,8 +21,9 @@ public:
 
     /**
      * Calcola la firma OH di un vettore.
-     * @param s: Vettore del set di input.
+     * @param set: Vettore del set di input.
+     * @param rot: Valore booleano che abilita la densificazione.
      * @return Firma OPH come vettore di interi.
      */
-    std::vector<uint64_t> computeSignature(std::vector<uint64_t> s);
+    std::vector<uint64_t> computeSignature(std::vector<uint64_t> set, bool rot);
 };

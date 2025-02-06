@@ -17,8 +17,6 @@ public:
      */
     static float approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k);
 
-    static float approx(std::vector<double> s1, std::vector<double> s2, int k);
-
     /**
      * Calcola la Jaccard Similarity esatta tra due insiemi (Algoritmo Naive).
      * @param set1: Primo insieme.

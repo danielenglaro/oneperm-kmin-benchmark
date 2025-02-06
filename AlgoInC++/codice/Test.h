@@ -14,9 +14,7 @@
 // Include le classi degli algoritmi
 #include "KMinHash.h"
 #include "OnePermutation.h"
-#include "FastSimilaritySketching.h"
 
-// Aggiunte mancanti
 #include "LettoreFile.h"  // Per la lettura dei file
 #include "JS.h"           // Per la gestione della Jaccard Similarity
 
@@ -27,8 +25,6 @@ class Test {
 private:
     // Metodi privati di utilità
     static std::vector<uint64_t> generate_random_set(int n, int m);
-    // static void save_result(const std::string& filename, const std::string& algoritmo, int param, int rep, double time, const std::string& strParam);
-
 
 public:
     // Metodi pubblici
