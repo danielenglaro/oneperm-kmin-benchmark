@@ -56,13 +56,15 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
     int current_iteration = 0;
     std::cout << "\n\n-- Test Tempo con k=" + std::to_string(k_fixed)+" --\n";
 
-    for (std::string algoritmo : algoritmi)
-    {
-        for (int n : n_values)
+    for (int n : n_values)
+    {   
+        std::vector<uint64_t> set = generate_random_set(n, m);
+
+        for (std::string algoritmo : algoritmi)
         {
             std::vector<double> times;  // Crea un vector vuoto per memorizzare i tempi
             times.reserve(repetitions); // Riserva spazio in memoria per 'repetitions' elementi
-            std::vector<uint64_t> set = generate_random_set(n, m);
+            
             for (int rep = 0; rep < repetitions; rep++)
             {
 
@@ -121,6 +123,8 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
 
+    std::vector<uint64_t> set = generate_random_set(n_fixed, m);
+
     // Inizializza barra di loading
     int total_iterations = algoritmi.size() * k_values.size() * repetitions;
     int current_iteration = 0;
@@ -132,7 +136,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
         {
             std::vector<double> times;
             times.reserve(repetitions);
-            std::vector<uint64_t> set = generate_random_set(n_fixed, m);
+            
             for (int rep = 0; rep < repetitions; rep++)
             {
 
@@ -181,14 +185,17 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
 
     std::vector<std::string> algoritmi = {"KMH", "OPH", "OPH_ROT"};
 
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
     // Inizializza barra di loading
     int total_iterations = algoritmi.size() * jaccard_values.size() * repetitions;
     int current_iteration = 0;
     std::cout << "\n\n-- Test Qualità con k=" + std::to_string(k)+" --\n";
 
-    for (std::string algoritmo : algoritmi) {
-            for (double jaccard_target : jaccard_values) {
-
+    
+    for (double jaccard_target : jaccard_values) {
                 std::string esegui = "python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target);
                 system(esegui.c_str());
 
@@ -196,38 +203,40 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                 ss << std::fixed << std::setprecision(1) << jaccard_target;
                 std::string filename = "dataset_" + ss.str() + ".txt";
 
-                    // Aspetta che il file esista e sia accessibile
-                    int tentativi = 0;
-                    const int max_tentativi = 10;
-                    bool file_pronto = false;
+                // Aspetta che il file esista e sia accessibile
+                int tentativi = 0;
+                const int max_tentativi = 10;
+                bool file_pronto = false;
 
-                    while (tentativi < max_tentativi && !file_pronto) {
-                        std::ifstream check_file(filename);
-                        if (check_file.good()) {
-                            // Verifica che il file sia completo
-                            check_file.seekg(0, std::ios::end);
-                            if (check_file.tellg() > 0) {
-                                file_pronto = true;
-                                check_file.close();
-                                break;
-                            }
+                while (tentativi < max_tentativi && !file_pronto) {
+                    std::ifstream check_file(filename);
+                    if (check_file.good()) {
+                        // Verifica che il file sia completo
+                        check_file.seekg(0, std::ios::end);
+                        if (check_file.tellg() > 0) {
+                            file_pronto = true;
+                            check_file.close();
+                            break;
                         }
-                        check_file.close();
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Aspetta 100ms
-                        tentativi++;
                     }
+                    check_file.close();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Aspetta 100ms
+                    tentativi++;
+                }
 
-                    if (!file_pronto) {
-                        // std::cerr << "Timeout: il file non è stato creato correttamente" << std::endl;
-                        continue;
+                if (!file_pronto) {
+                    // std::cerr << "Timeout: il file non è stato creato correttamente" << std::endl;
+                    continue;
                     }
 
                 std::pair<std::vector<uint64_t>, std::vector<uint64_t>> coppia = LettoreFile::read(filename)[0];
                 float jaccard_exact = JS::esatta(coppia.first, coppia.second);
 
+            for (std::string algoritmo : algoritmi) {
+
                 for (int rep = 0; rep < repetitions; rep++) {
                     
-                    size_t seed = rep;
+                    size_t seed = dis(gen);
                     float jaccard_estimated = -1;
 
                     if (algoritmo == "KMH") {

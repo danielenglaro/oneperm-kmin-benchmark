@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     // Converto il parametro in intero
     int x = atoi(argv[1]);
     
-    // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30
+    // Imposta il modulo dell'universo come il primo numero primo maggiore o uguale a 2^30 (1073741824)
     size_t m = 1073741824;
 
     //imposta ripetizioni esperimenti
@@ -29,11 +29,11 @@ int main(int argc, char *argv[])
     
     // ------------ TEST TEMPO k fissato ------------
     auto start = std::chrono::high_resolution_clock::now(); // CRONOMETRO
-    std::vector<int> vettore_k_fissato = { 16, 256, 4096 };// k fissato a salti di 2^4
+    std::vector<int> vettore_k_fissato = { 16, 256, 4096 }; // k fissato a salti di 2^4
     if (x == 0 || x == 2 || x == 4)
     {
         std::vector<int> n_range;
-        for (int i = (1 << 10); i <= (1 << 20); i *= 2) {
+        for (int i = (1 << 10); i <= (1 << 19); i *= 2) {
             n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
         }
         for(int k_fissato : vettore_k_fissato){
