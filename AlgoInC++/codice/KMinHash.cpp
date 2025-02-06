@@ -1,7 +1,5 @@
 #include "KMinHash.h"
 
-
-
 KMinHash::KMinHash(size_t k, size_t m, size_t seed)
 {
     this->k = k;

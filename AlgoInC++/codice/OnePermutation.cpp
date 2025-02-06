@@ -23,18 +23,20 @@ OnePermutation::OnePermutation(size_t k, size_t m, size_t seed)
 
 std::vector<double> OnePermutation::computeSignature(std::vector<uint64_t> s)
 {   
-    // Costruzione Firma
+    // Inizializzazione
     std::vector<double> signature(k,  std::numeric_limits<double>::max() );
     size_t range = m / k;
+    size_t C = range + 1;
 
-    for (size_t i = 0; i < s.size(); i++)
+    // Costruzione Firma
+    for (uint64_t e : s)
     {
-        size_t v = funzHash->map(s[i]);
-        if ( (v%range) < signature[v/range] ) signature[v/range] = (v%range);
+        size_t v = funzHash->map(e);
+        size_t i = v/range;
+        if ( (v%range) < signature[i] ) signature[i] = (v%range);
     }
 
     // Densificazione Per Rotazione
-    size_t C = range +1;
     for (size_t j = 0; j < k; j++)
     {     
         if (signature[j] == std::numeric_limits<double>::max())
