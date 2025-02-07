@@ -37,7 +37,7 @@ std::vector<uint64_t> OnePermutation::computeSignature(std::vector<uint64_t> set
     {
         for (size_t j = 0; j < k; j++)
         {
-            if (signature[j] == std::numeric_limits<double>::max())
+            if (signature[j] == UINT64_MAX)
             {
                 size_t start = j, step = 1, currentIndex;
                 while (true)

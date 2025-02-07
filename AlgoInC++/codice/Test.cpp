@@ -26,6 +26,14 @@ std::vector<uint64_t> Test::generate_random_set(int n, int m)
     return set;
 }
 
+//metodo per contare empty bin
+size_t Test::countEmptyBins(std::vector<uint64_t> s, size_t k){
+    size_t empty = 0;
+    for (size_t i = 0; i < k; i++)
+        if (s[i] == UINT64_MAX) empty++;
+    return empty;
+}
+
 // Funzione per testare il tempo di esecuzione in funzione di n (dimensione del set)
 // Input:
 // - k_fixed: un valore fisso per k, lunghezza dello sketch
@@ -73,7 +81,7 @@ void Test::test_time_vs_n(int k_fixed, std::vector<int> n_values, int repetition
                 std::unique_ptr<KMinHash> kMinHash;
                 std::unique_ptr<OnePermutation> oph;
 
-                if (algoritmo == "KMH") kMinHash = std::make_unique<KMinHash>(k_fixed, m, seed); //queste due righe prendono un boato
+                if (algoritmo == "KMH") kMinHash = std::make_unique<KMinHash>(k_fixed, m, seed);
                 else oph = std::make_unique<OnePermutation>(k_fixed, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
@@ -142,11 +150,11 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
 
                 size_t seed = dis(gen);
 
-                KMinHash* kMinHash;
-                OnePermutation* oph;
+                std::unique_ptr<KMinHash> kMinHash;
+                std::unique_ptr<OnePermutation> oph;
 
-                if (algoritmo == "KMH") kMinHash = new KMinHash(k, m, seed);
-                else oph = new OnePermutation(k, m, seed);
+                if (algoritmo == "KMH") kMinHash = std::make_unique<KMinHash>(k, m, seed);
+                else oph = std::make_unique<OnePermutation>(k, m, seed);
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (algoritmo == "KMH") kMinHash->computeSignature(set);
@@ -173,7 +181,7 @@ void Test::test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetition
 }
 
 void Test::test_quality(int k, int n, int repetitions, int m) {
-    std::string output_file = "quality_results_k=" + std::to_string(k) + ".csv";
+    std::string output_file = "quality_results_k=" + std::to_string(k) + "_n=" + std::to_string(n) + ".csv";
 
     // Apri il file e scrivi l'header
     std::ofstream file;
@@ -194,9 +202,9 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
     int current_iteration = 0;
     std::cout << "\n\n-- Test Qualità con k=" + std::to_string(k)+" --\n";
 
-    
+
     for (double jaccard_target : jaccard_values) {
-                std::string esegui = "python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target);
+                std::string esegui = "python3 script.py 1 "+ std::to_string(n) + " " + std::to_string(jaccard_target) + " " + std::to_string(m);
                 system(esegui.c_str());
 
                 std::ostringstream ss;
@@ -237,7 +245,7 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                 for (int rep = 0; rep < repetitions; rep++) {
                     
                     size_t seed = dis(gen);
-                    float jaccard_estimated = -1;
+                    float jaccard_estimated = -1; //iniziallizato a -1 per verificare errori
 
                     if (algoritmo == "KMH") {
                         KMinHash kMinHash(k, m, seed);
@@ -249,7 +257,7 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                         OnePermutation oph(k, m, seed);
                         auto signature1 = oph.computeSignature(coppia.first, false);
                         auto signature2 = oph.computeSignature(coppia.second, false);
-                        jaccard_estimated = JS::approx(signature1, signature2, k);
+                        jaccard_estimated = JS::approxEB(signature1, signature2, k);
                     }
                     else if (algoritmo == "OPH_ROT") {
                         OnePermutation oph(k, m, seed);
@@ -273,4 +281,94 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
                 std::cout << "\r    Progresso: " << progress << "%" << std::flush;
             }
     }
+}
+
+void Test::test_emptyBins(int k_fixed, std::vector<int> n_values, int repetitions, int m)
+{
+    std::string output_file = "emptyBins_results_k=" + std::to_string(k_fixed) + ".csv";
+
+    // Apri il file e scrivi l'header
+    std::ofstream file;
+    file.open(output_file);
+    file << "Algoritmo;Dimensione (n);Funzione hash;Numero di Bins\n";
+    file.close();
+
+    // Inizializza il generatore di numeri casuali
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
+    // Inizializza barra di loading
+    int total_iterations = n_values.size() * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Empty Bin con k=" + std::to_string(k_fixed)+" --\n";
+
+    for (int n : n_values)
+    {   
+        std::vector<uint64_t> set = generate_random_set(n, m);
+        for (int rep = 0; rep < repetitions; rep++)
+        {
+            size_t seed = dis(gen);
+
+            OnePermutation oph(k_fixed, m, seed);
+            std::vector<uint64_t> signature = oph.computeSignature(set,false);
+            size_t emptyBins = countEmptyBins(signature, k_fixed);
+    
+            file.open(output_file, std::ios::app);
+            file << "OPH_SENZA_ROT" << ";" << n << ";" << rep + 1 << ";" << emptyBins << "\n";
+            file.close();
+
+            // Aggiorna progresso barra di caricamento
+            current_iteration++;
+        }
+        // Aggiorna la barra di caricamento
+        int progress = static_cast<int>((static_cast<double>(current_iteration) / total_iterations) * 100);
+        std::cout << "\r    Progresso: " << progress << "%" << std::flush;
+    }
+    std::cout << "\nCompletato!" << std::endl;
+}
+
+void Test::test_emptyBins(int k_fixed, std::vector<int> n_values, int repetitions, int m)
+{
+    std::string output_file = "emptyBins_results_k=" + std::to_string(k_fixed) + ".csv";
+
+    // Apri il file e scrivi l'header
+    std::ofstream file;
+    file.open(output_file);
+    file << "Algoritmo;Dimensione (n);Funzione hash;Numero di Bins\n";
+    file.close();
+
+    // Inizializza il generatore di numeri casuali
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
+
+    // Inizializza barra di loading
+    int total_iterations = n_values.size() * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Empty Bin con k=" + std::to_string(k_fixed)+" --\n";
+
+    for (int n : n_values)
+    {   
+        std::vector<uint64_t> set = generate_random_set(n, m);
+        for (int rep = 0; rep < repetitions; rep++)
+        {
+            size_t seed = dis(gen);
+
+            OnePermutation oph(k_fixed, m, seed);
+            std::vector<uint64_t> signature = oph.computeSignature(set,false);
+            size_t emptyBins = countEmptyBins(signature, k_fixed);
+    
+            file.open(output_file, std::ios::app);
+            file << "OPH_SENZA_ROT" << ";" << n << ";" << rep + 1 << ";" << emptyBins << "\n";
+            file.close();
+
+            // Aggiorna progresso barra di caricamento
+            current_iteration++;
+        }
+        // Aggiorna la barra di caricamento
+        int progress = static_cast<int>((static_cast<double>(current_iteration) / total_iterations) * 100);
+        std::cout << "\r    Progresso: " << progress << "%" << std::flush;
+    }
+    std::cout << "\nCompletato!" << std::endl;
 }

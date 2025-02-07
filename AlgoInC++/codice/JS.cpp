@@ -2,15 +2,30 @@
 
 float JS::approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k)
 {
-    size_t count = 0;
+    size_t match = 0;
     for (int i = 0; i < k; i++)
     {
         if (s1[i] == s2[i])
         {
-            count++;
+            match++;
         }
     }
-    return static_cast<float>(count) / k;
+    return static_cast<float>(match) / k;
+}
+
+float JS::approxEB(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k)
+{
+    size_t match = 0, empty1 = 0, empty2 = 0;
+    for (int i = 0; i < k; i++)
+    {
+        if (s1[i] == UINT64_MAX)
+            empty1++;
+        if (s2[i] == UINT64_MAX)
+            empty2++;
+        if (s1[i] == s2[i] && s1[i] != UINT64_MAX && s2[i] != UINT64_MAX)
+            match++;
+    }
+    return static_cast<float>(match) / (std::sqrt(k - empty1) * std::sqrt(k - empty2));
 }
 
 float JS::esatta(std::vector<uint64_t> set1, std::vector<uint64_t> set2)

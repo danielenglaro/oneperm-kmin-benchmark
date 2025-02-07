@@ -18,6 +18,15 @@ public:
     static float approx(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k);
 
     /**
+     * Funzione per il calcolo della JS Approssimata con Empty Bin
+     * @param s1: firme del prima insieme
+     * @param s2: firme del secondo insieme
+     * @param k: lunghezza dei vettori delle firme (numero delle funzioni hash utilizzate)
+     * @return Similarità di Jaccard Aprrossimata.
+     */
+    static float approxEB(std::vector<uint64_t> s1, std::vector<uint64_t> s2, int k);
+
+    /**
      * Calcola la Jaccard Similarity esatta tra due insiemi (Algoritmo Naive).
      * @param set1: Primo insieme.
      * @param set2: Secondo insieme.

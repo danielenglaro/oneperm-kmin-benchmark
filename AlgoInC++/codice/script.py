@@ -78,11 +78,12 @@ if __name__ == "__main__":
     # print(len(A & B) / len(A | B), len(A), len(B))
 
     # Verifica che ci sia un argomento e che sia valido (n o k)
-    if len(sys.argv) != 4:
-        print("Uso: python3 script.py N_coppie size_union JS")
+    if len(sys.argv) != 5:
+        print("Uso: python3 script.py N_coppie size_union JS m")
         sys.exit(1)
 
     N = int(sys.argv[1])
     size_union = int(sys.argv[2])
     J = float(sys.argv[3])
-    create_dataset(N, size_union, J)
+    m = int(sys.argv[4])
+    create_dataset(N, size_union, J, m)
