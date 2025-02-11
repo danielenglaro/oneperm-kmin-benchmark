@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
+# Imposta le dimensioni generali del testo
+plt.rcParams.update({'font.size': 14})  # Aumenta la dimensione generale del font
+
 # Verifica che ci sia un argomento e che sia valido (n o k)
 if len(sys.argv) != 3 or sys.argv[1] not in ['n', 'k']:
     print("Uso: python3 graficoTempo.py [n|k]")
@@ -15,12 +18,12 @@ param_2 = sys.argv[2] # valore di k/n fissato
 # Determina il file da leggere
 if param_1 == 'k':
     filename = 'time_results_k='+param_2+'.csv'
-    x_label = 'Dimensione (n)'
+    x_label = 'Dimensione del set in input (n)'
     dim_column = 'Dimensione (n)'
     output_image = 'grafico_tempo_k='+param_2+'.png'  # Nome del file di output per n
 else:  # param_1 == 'n'
     filename = 'time_results_n='+param_2+'.csv'
-    x_label = 'Numero di funzioni hash (k)'
+    x_label = 'Dimensione della firma (k)'
     dim_column = 'Dimensione (k)'
     output_image = 'grafico_tempo_n='+param_2+'.png'  # Nome del file di output per k
 
@@ -60,9 +63,9 @@ plt.xticks(range(len(mean_times[dim_column].unique())),
 plt.xlabel(x_label)
 plt.ylabel('Tempo di esecuzione (microsecondi)')
 if param_1 == 'n':
-    plt.title(f'Confronto delle prestazioni degli algoritmi al variare di k,    con n (fissato) ='+param_2)
+    plt.title(f'Analisi del tempo di esecuzione al variare di k, con n (fissato) ='+param_2)
 else:
-    plt.title(f'Confronto delle prestazioni degli algoritmi al variare di n,    con k (fissato) ='+param_2)
+    plt.title(f'Analisi del tempo di esecuzione al variare di n, con k (fissato) ='+param_2)
 plt.grid(True, alpha=0.3)
 plt.legend()
 

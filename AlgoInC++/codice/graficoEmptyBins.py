@@ -3,26 +3,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-# Verifica che ci sia un argomento e che sia valido (n o k)
-if len(sys.argv) != 3 or sys.argv[1] not in ['n', 'k']:
-    print("Uso: python3 graficoTempo.py [n|k]")
+# Imposta le dimensioni generali del testo
+plt.rcParams.update({'font.size': 14})  # Aumenta la dimensione generale del font
+
+# Verifica che ci siano 2 argomenti (k e n)
+if len(sys.argv) != 3:
+    print("ERRORE Usa: python3 graficoTempo.py k n")
     sys.exit(1)
 
-param_1 = sys.argv[1] # se n o k
-param_2 = sys.argv[2] # valore di k/n fissato
+param_1 = sys.argv[1] # valore di k fissato
+param_2 = sys.argv[2] # valore di n fissato
 
+# file da leggere
 
-# Determina il file da leggere
-if param_1 == 'k':
-    filename = 'emptyBins_results_k='+param_2+'.csv'
-    x_label = 'Dimensione (n)'
-    dim_column = 'Dimensione (n)'
-    output_image = 'grafico_emptyBins_k='+param_2+'.png'  # Nome del file di output per n
-else:  # param_1 == 'n'
-    filename = 'emptyBins_results_n='+param_2+'.csv'
-    x_label = 'Numero di funzioni hash (k)'
-    dim_column = 'Dimensione (k)'
-    output_image = 'grafico_emptyBins_n='+param_2+'.png'  # Nome del file di output per k
+filename = 'emptyBins_results_k='+param_1+'_n='+param_2+'.csv'
+x_label = 'Numero di elementi nel Set'
+dim_column = 'Numero di elementi nel Set'
+output_image = 'grafico_emptyBins_k='+param_1+'_n='+param_2+'.png'  # Nome del file di output per n
 
 # Leggi il file CSV
 df = pd.read_csv(filename, sep=';')
@@ -33,8 +30,8 @@ mean_times = df.groupby(['Algoritmo', dim_column])['Numero di Bins'].mean().rese
 # Crea il grafico 12x8 pollici
 plt.figure(figsize=(12, 8))
 
-# Definisce i colori per ogni algoritmo
-colors = {'KMH': 'red', 'OPH_SENZA_ROT': 'green', 'OPH_ROT': 'blue'}
+# Definisce i colori per algoritmo
+colors = {'OPH_SENZA_ROT': 'green'}
 
 for algo in mean_times['Algoritmo'].unique():
     # Filtra i dati per l'algoritmo corrente
@@ -52,17 +49,14 @@ for algo in mean_times['Algoritmo'].unique():
 # # Imposta scala logaritmica per l'asse y
 # plt.yscale('log')
 
-# Personalizza l'asse x per mostrare le potenze di 2
-plt.xticks(range(len(mean_times[dim_column].unique())),
-           [f'2^{int(np.log2(x))}' for x in sorted(mean_times[dim_column].unique())],
-           rotation=45)
+# # Personalizza l'asse x per mostrare le potenze di 2
+# plt.xticks(range(len(mean_times[dim_column].unique())),
+#            [f'2^{int(np.log2(x))}' for x in sorted(mean_times[dim_column].unique())],
+#            rotation=45)
 
 plt.xlabel(x_label)
 plt.ylabel('Numero di Bins')
-if param_1 == 'n':
-    plt.title(f'Confronto delle prestazioni degli algoritmi al variare di n,    con k (fissato) ='+param_2)
-else:
-    plt.title(f'Confronto Aumento degli Empty Bin al variare di n,    con k (fissato) ='+param_2)
+plt.title(f'Variazione degli Empty-Bin rispetto agli elementi inseriti, con k= '+param_1+' e |Set|='+param_2)
 plt.grid(True, alpha=0.3)
 plt.legend()
 

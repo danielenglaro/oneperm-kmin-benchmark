@@ -283,14 +283,14 @@ void Test::test_quality(int k, int n, int repetitions, int m) {
     }
 }
 
-void Test::test_emptyBins(int k_fixed, std::vector<int> n_values, int repetitions, int m)
+void Test::test_emptyBins(int k_fixed, int n, int repetitions, int m)
 {
-    std::string output_file = "emptyBins_results_k=" + std::to_string(k_fixed) + ".csv";
+    std::string output_file = "emptyBins_results_k=" + std::to_string(k_fixed) + "_n=" + std::to_string(n) + ".csv";
 
     // Apri il file e scrivi l'header
     std::ofstream file;
     file.open(output_file);
-    file << "Algoritmo;Dimensione (n);Funzione hash;Numero di Bins\n";
+    file << "Algoritmo;Numero di elementi nel Set;Funzione hash;Numero di Bins\n";
     file.close();
 
     // Inizializza il generatore di numeri casuali
@@ -298,14 +298,18 @@ void Test::test_emptyBins(int k_fixed, std::vector<int> n_values, int repetition
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<size_t> dis(1, std::numeric_limits<size_t>::max());
 
-    // Inizializza barra di loading
-    int total_iterations = n_values.size() * repetitions;
-    int current_iteration = 0;
-    std::cout << "\n\n-- Test Empty Bin con k=" + std::to_string(k_fixed)+" --\n";
+    std::vector<uint64_t> setOrigine = generate_random_set(n, m);
+    std::vector<uint64_t> set;
+    size_t size = setOrigine.size();
 
-    for (int n : n_values)
-    {   
-        std::vector<uint64_t> set = generate_random_set(n, m);
+    // Inizializza barra di loading
+    int total_iterations = size * repetitions;
+    int current_iteration = 0;
+    std::cout << "\n\n-- Test Empty Bin con k=" + std::to_string(k_fixed)+ "_n=" + std::to_string(n)+ " --\n";
+
+    for (size_t i=0; i < size; i++)
+    {
+        set.push_back(setOrigine[i]);
         for (int rep = 0; rep < repetitions; rep++)
         {
             size_t seed = dis(gen);
@@ -313,9 +317,9 @@ void Test::test_emptyBins(int k_fixed, std::vector<int> n_values, int repetition
             OnePermutation oph(k_fixed, m, seed);
             std::vector<uint64_t> signature = oph.computeSignature(set,false);
             size_t emptyBins = countEmptyBins(signature, k_fixed);
-    
+
             file.open(output_file, std::ios::app);
-            file << "OPH_SENZA_ROT" << ";" << n << ";" << rep + 1 << ";" << emptyBins << "\n";
+            file << "OPH_SENZA_ROT" << ";" << i << ";" << rep + 1 << ";" << emptyBins << "\n";
             file.close();
 
             // Aggiorna progresso barra di caricamento

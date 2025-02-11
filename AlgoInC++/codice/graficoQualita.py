@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
+# Imposta le dimensioni generali del testo
+plt.rcParams.update({'font.size': 14})  # Aumenta la dimensione generale del font
+
 # Verifica che ci sia un argomento e che sia valido (k)
 if len(sys.argv) != 3:
     print("ERRORE USA: python3 graficoQualita.py [k] [n]")

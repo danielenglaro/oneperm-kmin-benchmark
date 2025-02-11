@@ -35,7 +35,7 @@ public:
     static void test_time_vs_k(std::vector<int> k_values, int n_fixed, int repetitions, int m);
     // Metodo statico per il test di qualità
     static void test_quality(int k, int n, int repetitions, int m);
-    static void test_emptyBins(int k_fixed, std::vector<int> n_values, int repetitions, int m);
+    static void test_emptyBins(int k_fixed, int n, int repetitions, int m);
 };
 
 #endif // TEST_H

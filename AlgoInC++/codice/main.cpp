@@ -12,7 +12,8 @@ int main(int argc, char *argv[])
         printf("\n      2 per eseguire tutti i test sul tempo");
         printf("\n      3 per eseguire test sulla qualità");
         printf("\n      4 per eseguire test sugli empty bin");
-        printf("\n      5 per eseguire tutti i test\n\n");
+        printf("\n      5 per eseguire tutti i test");
+        printf("\n      6 per generare solo i grafici\n\n");
         return 1;  // esco con errore
     }
     // Converto il parametro in intero
@@ -97,20 +98,17 @@ int main(int argc, char *argv[])
     std::cout << "\nTempo impiegato [TEST QUALITA']: " << duration.count() << " secondi\n\n" << std::endl;
 
 
-    // ------------ TEST EMPTY BINS k fissato ------------
+    // ------------ TEST EMPTY BINS  ------------
     start = std::chrono::high_resolution_clock::now(); // CRONOMETRO
-    vettore_k_fissato = { 16, 256 , 1000}; // k fissato a salti di 2^4
+    std::vector<std::pair<int, int>> vettore_k_n = { {10, 50}, {50, 300}, {100, 600}, {1000, 7000} };
     if (x == 4 || x == 5)
     {
-        std::vector<int> n_range;
-        for (int i = (1 << 10); i <= (1 << 16); i *= 2) {
-            n_range.push_back(i); // n range || Ciclo per generare le potenze da 2^10 fino a 2^20
-        }
-        for(int k_fissato : vettore_k_fissato){
-            Test::test_emptyBins(k_fissato, n_range, rep, m);
+        for (auto coppiaValori : vettore_k_n)
+        {
+            Test::test_emptyBins(coppiaValori.first, coppiaValori.second, rep, m);
 
             // Esegui lo script Python per generare il grafico dei tempi in funzione di n
-            system( ("python3 graficoEmptyBins.py k " + std::to_string(k_fissato)).c_str() );
+            system( ("python3 graficoEmptyBins.py " + std::to_string(coppiaValori.first) + " " + std::to_string(coppiaValori.second)).c_str() );
 
             // system( ("open grafico_tempo_k=" + std::to_string(k_fissato) + ".png").c_str() );
         }
@@ -118,4 +116,25 @@ int main(int argc, char *argv[])
     end = std::chrono::high_resolution_clock::now();
     duration = end - start;
     std::cout << "\nTempo impiegato [TEST TEMPO k fissato]: " << duration.count() << " secondi\n\n" << std::endl;
+
+
+
+    // ------------ SOLO GENERAZIONE GRAFICI ------------
+    if (x == 6)
+    {   
+        vettore_k_fissato = { 16, 256 , 4096 };
+        for(int k_fissato : vettore_k_fissato) system( ("python3 graficoTempo.py k " + std::to_string(k_fissato)).c_str() );
+
+        vettore_n_fissato = { 1000, 100000, 1000000 };
+        for(int n_fissato : vettore_n_fissato) system( ("python3 graficoTempo.py n " + std::to_string(n_fissato)).c_str() );
+
+        vettore_n_fissato = { 1000, 50000, 200000 };
+        vettore_k_fissato = { 16, 256 , 4096 };
+        for (int n_fissato : vettore_n_fissato)
+            for(int k_fissato : vettore_k_fissato)
+                system(("python3 graficoQualita.py " + std::to_string(k_fissato) + " " + std::to_string(n_fissato)).c_str());
+        
+        vettore_k_n = { {10, 50}, {50, 300}, {100, 600}, {1000, 7000} };
+        for (auto coppiaValori : vettore_k_n) system( ("python3 graficoEmptyBins.py " + std::to_string(coppiaValori.first) + " " + std::to_string(coppiaValori.second)).c_str() );
+    }
 }
